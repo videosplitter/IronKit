@@ -9,6 +9,8 @@
 #import "RIViewController.h"
 #import "RITableViewDataSource.h"
 
+#import "RIRefreshControl.h"
+
 #import "Entity.h"
 
 @interface RIViewController () {
@@ -33,6 +35,19 @@
 		cell.textLabel.text = [(Entity *)object name];
 	}];
 	_dataSource.tableView = self.tableView;
+	
+	RIRefreshControl * refreshControl = [[RIRefreshControl alloc] init];
+	[refreshControl addTarget:self action:@selector(refreshControlDidChangeState:) forControlEvents:UIControlEventValueChanged];
+	refreshControl.backgroundColor = [UIColor grayColor];
+	self.tableView.refreshControl = refreshControl;
+}
+
+- (void)refreshControlDidChangeState:(RIRefreshControl *)sender {
+	if (sender.refreshing) {
+		[sender performSelector:@selector(endRefreshing) withObject:nil afterDelay:3.0];
+	} else {
+		[NSObject cancelPreviousPerformRequestsWithTarget:sender selector:@selector(endRefreshing) object:nil];
+	}
 }
 
 - (void)didReceiveMemoryWarning

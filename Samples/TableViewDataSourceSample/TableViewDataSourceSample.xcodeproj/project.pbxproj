@@ -10,14 +10,12 @@
 		418726A4168113FA00C3C2F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 418726A3168113FA00C3C2F4 /* UIKit.framework */; };
 		418726A6168113FA00C3C2F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 418726A5168113FA00C3C2F4 /* Foundation.framework */; };
 		418726A8168113FA00C3C2F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 418726A7168113FA00C3C2F4 /* CoreGraphics.framework */; };
-		418726AE168113FA00C3C2F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 418726AC168113FA00C3C2F4 /* InfoPlist.strings */; };
 		418726B0168113FA00C3C2F4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 418726AF168113FA00C3C2F4 /* main.m */; };
 		418726B4168113FA00C3C2F4 /* RIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 418726B3168113FA00C3C2F4 /* RIAppDelegate.m */; };
 		418726B6168113FA00C3C2F4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 418726B5168113FA00C3C2F4 /* Default.png */; };
 		418726B8168113FA00C3C2F4 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 418726B7168113FA00C3C2F4 /* Default@2x.png */; };
 		418726BA168113FA00C3C2F4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 418726B9168113FA00C3C2F4 /* Default-568h@2x.png */; };
 		418726C5168114B600C3C2F4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 418726C4168114B600C3C2F4 /* CoreData.framework */; };
-		418726C81681150000C3C2F4 /* RITableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 418726C71681150000C3C2F4 /* RITableViewDataSource.m */; };
 		418726CD16811D1700C3C2F4 /* RIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 418726CC16811D1700C3C2F4 /* RIViewController.m */; };
 		418728F51682084500C3C2F4 /* MagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 418728BD1682084500C3C2F4 /* MagicalImportFunctions.m */; };
 		418728F61682084500C3C2F4 /* NSAttributeDescription+MagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 418728BF1682084500C3C2F4 /* NSAttributeDescription+MagicalDataImport.m */; };
@@ -47,6 +45,8 @@
 		4187290E1682084500C3C2F4 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 418728F21682084500C3C2F4 /* MagicalRecord.m */; };
 		418729111682089900C3C2F4 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4187290F1682089900C3C2F4 /* Model.xcdatamodeld */; };
 		41872915168208C800C3C2F4 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 41872914168208C800C3C2F4 /* Entity.m */; };
+		418729301682621500C3C2F4 /* RITableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4187292F1682621500C3C2F4 /* RITableViewDataSource.m */; };
+		418729331682622C00C3C2F4 /* RIRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 418729321682622C00C3C2F4 /* RIRefreshControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,7 +55,6 @@
 		418726A5168113FA00C3C2F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		418726A7168113FA00C3C2F4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		418726AB168113FA00C3C2F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		418726AD168113FA00C3C2F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		418726AF168113FA00C3C2F4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		418726B1168113FA00C3C2F4 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		418726B2168113FA00C3C2F4 /* RIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RIAppDelegate.h; sourceTree = "<group>"; };
@@ -64,8 +63,6 @@
 		418726B7168113FA00C3C2F4 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		418726B9168113FA00C3C2F4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		418726C4168114B600C3C2F4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		418726C61681150000C3C2F4 /* RITableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RITableViewDataSource.h; sourceTree = "<group>"; };
-		418726C71681150000C3C2F4 /* RITableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RITableViewDataSource.m; sourceTree = "<group>"; };
 		418726CB16811D1700C3C2F4 /* RIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIViewController.h; sourceTree = "<group>"; };
 		418726CC16811D1700C3C2F4 /* RIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIViewController.m; sourceTree = "<group>"; };
 		418728BC1682084500C3C2F4 /* MagicalImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalImportFunctions.h; sourceTree = "<group>"; };
@@ -125,6 +122,10 @@
 		418729101682089900C3C2F4 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		41872913168208C800C3C2F4 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		41872914168208C800C3C2F4 /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Entity.m; sourceTree = "<group>"; };
+		4187292E1682621500C3C2F4 /* RITableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RITableViewDataSource.h; sourceTree = "<group>"; };
+		4187292F1682621500C3C2F4 /* RITableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RITableViewDataSource.m; sourceTree = "<group>"; };
+		418729311682622C00C3C2F4 /* RIRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIRefreshControl.h; sourceTree = "<group>"; };
+		418729321682622C00C3C2F4 /* RIRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIRefreshControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				418726A9168113FA00C3C2F4 /* TableViewDataSourceSample */,
+				4187292D1682621400C3C2F4 /* IronKit */,
 				418726F61682082000C3C2F4 /* Third Party */,
 				418726A2168113FA00C3C2F4 /* Frameworks */,
 				418726A0168113FA00C3C2F4 /* Products */,
@@ -179,7 +181,6 @@
 				418726CB16811D1700C3C2F4 /* RIViewController.h */,
 				418726CC16811D1700C3C2F4 /* RIViewController.m */,
 				41872912168208A000C3C2F4 /* Entities */,
-				418726C01681145000C3C2F4 /* IronKit */,
 				418726AA168113FA00C3C2F4 /* Supporting Files */,
 			);
 			path = TableViewDataSourceSample;
@@ -189,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				418726AB168113FA00C3C2F4 /* Info.plist */,
-				418726AC168113FA00C3C2F4 /* InfoPlist.strings */,
 				418726AF168113FA00C3C2F4 /* main.m */,
 				418726B1168113FA00C3C2F4 /* Prefix.pch */,
 				418726B5168113FA00C3C2F4 /* Default.png */,
@@ -198,16 +198,6 @@
 				4187290F1682089900C3C2F4 /* Model.xcdatamodeld */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		418726C01681145000C3C2F4 /* IronKit */ = {
-			isa = PBXGroup;
-			children = (
-				418726C61681150000C3C2F4 /* RITableViewDataSource.h */,
-				418726C71681150000C3C2F4 /* RITableViewDataSource.m */,
-			);
-			name = IronKit;
-			path = ../../../IronKit;
 			sourceTree = "<group>";
 		};
 		418726F61682082000C3C2F4 /* Third Party */ = {
@@ -329,6 +319,18 @@
 			name = Entities;
 			sourceTree = "<group>";
 		};
+		4187292D1682621400C3C2F4 /* IronKit */ = {
+			isa = PBXGroup;
+			children = (
+				4187292E1682621500C3C2F4 /* RITableViewDataSource.h */,
+				4187292F1682621500C3C2F4 /* RITableViewDataSource.m */,
+				418729311682622C00C3C2F4 /* RIRefreshControl.h */,
+				418729321682622C00C3C2F4 /* RIRefreshControl.m */,
+			);
+			name = IronKit;
+			path = ../../IronKit;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -381,7 +383,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				418726AE168113FA00C3C2F4 /* InfoPlist.strings in Resources */,
 				418726B6168113FA00C3C2F4 /* Default.png in Resources */,
 				418726B8168113FA00C3C2F4 /* Default@2x.png in Resources */,
 				418726BA168113FA00C3C2F4 /* Default-568h@2x.png in Resources */,
@@ -397,7 +398,6 @@
 			files = (
 				418726B0168113FA00C3C2F4 /* main.m in Sources */,
 				418726B4168113FA00C3C2F4 /* RIAppDelegate.m in Sources */,
-				418726C81681150000C3C2F4 /* RITableViewDataSource.m in Sources */,
 				418726CD16811D1700C3C2F4 /* RIViewController.m in Sources */,
 				418728F51682084500C3C2F4 /* MagicalImportFunctions.m in Sources */,
 				418728F61682084500C3C2F4 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
@@ -427,21 +427,12 @@
 				4187290E1682084500C3C2F4 /* MagicalRecord.m in Sources */,
 				418729111682089900C3C2F4 /* Model.xcdatamodeld in Sources */,
 				41872915168208C800C3C2F4 /* Entity.m in Sources */,
+				418729301682621500C3C2F4 /* RITableViewDataSource.m in Sources */,
+				418729331682622C00C3C2F4 /* RIRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		418726AC168113FA00C3C2F4 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				418726AD168113FA00C3C2F4 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		418726BB168113FA00C3C2F4 /* Debug */ = {
@@ -555,6 +546,7 @@
 				418726BF168113FA00C3C2F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
