@@ -8,12 +8,17 @@
 
 #import "RIAppDelegate.h"
 
+static NSString * const DBAppKey	= @"26gwggoedqktj1q";
+static NSString * const DBAppSecret	= @"7erqim2trojn3cd";
+
 @implementation RIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    return YES;
+	DBSession * dbSession = [[DBSession alloc] initWithAppKey:DBAppKey appSecret:DBAppSecret root:kDBRootAppFolder]; // either kDBRootAppFolder or kDBRootDropbox
+	[DBSession setSharedSession:dbSession];
+	
+	return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -41,6 +46,19 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+	if ([[DBSession sharedSession] handleOpenURL:url]) {
+		if ([[DBSession sharedSession] isLinked]) {
+			NSLog(@"App linked successfully!");
+			// At this point you can start making API calls
+			// TODO send notification
+		}
+		return YES;
+	}
+	// Add whatever other url handling code your app requires here
+	return NO;
 }
 
 @end
