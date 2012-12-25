@@ -1,3 +1,6 @@
 [submodule "Samples/ThirdParty/MagicalRecord"]
 	path = Samples/ThirdParty/MagicalRecord
 	url = git://github.com/magicalpanda/MagicalRecord.git
+[submodule "Samples/ThirdParty/AFNetworking"]
+	path = Samples/ThirdParty/AFNetworking
+	url = git://github.com/AFNetworking/AFNetworking.git
