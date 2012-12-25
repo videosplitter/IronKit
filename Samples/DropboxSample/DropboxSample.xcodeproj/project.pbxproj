@@ -16,7 +16,6 @@
 		41B15D531689E36F004A42B2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D521689E36F004A42B2 /* Default.png */; };
 		41B15D551689E36F004A42B2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D541689E36F004A42B2 /* Default@2x.png */; };
 		41B15D571689E36F004A42B2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D561689E36F004A42B2 /* Default-568h@2x.png */; };
-		41B15D5A1689E36F004A42B2 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D581689E36F004A42B2 /* MainStoryboard.storyboard */; };
 		41B15D5D1689E36F004A42B2 /* RIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15D5C1689E36F004A42B2 /* RIViewController.m */; };
 		41B15F031689E472004A42B2 /* RISlideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F001689E472004A42B2 /* RISlideMenuController.m */; };
 		41B15F041689E472004A42B2 /* RITableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F021689E472004A42B2 /* RITableViewDataSource.m */; };
@@ -60,6 +59,8 @@
 		41B15F9B1689E593004A42B2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B15F9A1689E593004A42B2 /* Security.framework */; };
 		41B15F9D1689E5A1004A42B2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B15F9C1689E5A1004A42B2 /* QuartzCore.framework */; };
 		41B15FA01689E6A6004A42B2 /* RIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F9F1689E6A6004A42B2 /* RIModel.m */; };
+		41B15FA51689EF3C004A42B2 /* DBFetchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FA41689EF3C004A42B2 /* DBFetchModel.m */; };
+		41B15FA81689EF5F004A42B2 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FA61689EF5F004A42B2 /* DataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,7 +77,6 @@
 		41B15D521689E36F004A42B2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		41B15D541689E36F004A42B2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		41B15D561689E36F004A42B2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		41B15D591689E36F004A42B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		41B15D5B1689E36F004A42B2 /* RIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RIViewController.h; sourceTree = "<group>"; };
 		41B15D5C1689E36F004A42B2 /* RIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RIViewController.m; sourceTree = "<group>"; };
 		41B15EFF1689E472004A42B2 /* RISlideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RISlideMenuController.h; sourceTree = "<group>"; };
@@ -162,6 +162,9 @@
 		41B15F9C1689E5A1004A42B2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		41B15F9E1689E6A6004A42B2 /* RIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIModel.h; sourceTree = "<group>"; };
 		41B15F9F1689E6A6004A42B2 /* RIModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIModel.m; sourceTree = "<group>"; };
+		41B15FA31689EF3C004A42B2 /* DBFetchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFetchModel.h; sourceTree = "<group>"; };
+		41B15FA41689EF3C004A42B2 /* DBFetchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFetchModel.m; sourceTree = "<group>"; };
+		41B15FA71689EF5F004A42B2 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,9 +222,8 @@
 			children = (
 				41B15D4F1689E36F004A42B2 /* RIAppDelegate.h */,
 				41B15D501689E36F004A42B2 /* RIAppDelegate.m */,
-				41B15D581689E36F004A42B2 /* MainStoryboard.storyboard */,
-				41B15D5B1689E36F004A42B2 /* RIViewController.h */,
-				41B15D5C1689E36F004A42B2 /* RIViewController.m */,
+				41B15FA21689EF11004A42B2 /* Models */,
+				41B15FA11689EF06004A42B2 /* Controllers */,
 				41B15EFE1689E472004A42B2 /* IronKit */,
 				41B15D471689E36F004A42B2 /* Supporting Files */,
 			);
@@ -238,6 +240,7 @@
 				41B15D521689E36F004A42B2 /* Default.png */,
 				41B15D541689E36F004A42B2 /* Default@2x.png */,
 				41B15D561689E36F004A42B2 /* Default-568h@2x.png */,
+				41B15FA61689EF5F004A42B2 /* DataModel.xcdatamodeld */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -395,6 +398,24 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		41B15FA11689EF06004A42B2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				41B15D5B1689E36F004A42B2 /* RIViewController.h */,
+				41B15D5C1689E36F004A42B2 /* RIViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		41B15FA21689EF11004A42B2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				41B15FA31689EF3C004A42B2 /* DBFetchModel.h */,
+				41B15FA41689EF3C004A42B2 /* DBFetchModel.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -451,7 +472,6 @@
 				41B15D531689E36F004A42B2 /* Default.png in Resources */,
 				41B15D551689E36F004A42B2 /* Default@2x.png in Resources */,
 				41B15D571689E36F004A42B2 /* Default-568h@2x.png in Resources */,
-				41B15D5A1689E36F004A42B2 /* MainStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +523,8 @@
 				41B15F941689E507004A42B2 /* MagicalRecord+ShorthandSupport.m in Sources */,
 				41B15F951689E507004A42B2 /* MagicalRecord.m in Sources */,
 				41B15FA01689E6A6004A42B2 /* RIModel.m in Sources */,
+				41B15FA51689EF3C004A42B2 /* DBFetchModel.m in Sources */,
+				41B15FA81689EF5F004A42B2 /* DataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,14 +537,6 @@
 				41B15D4A1689E36F004A42B2 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		41B15D581689E36F004A42B2 /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41B15D591689E36F004A42B2 /* en */,
-			);
-			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -643,6 +657,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		41B15FA61689EF5F004A42B2 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				41B15FA71689EF5F004A42B2 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 41B15FA71689EF5F004A42B2 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 41B15D331689E36F004A42B2 /* Project object */;
 }

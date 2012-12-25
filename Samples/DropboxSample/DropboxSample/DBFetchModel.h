@@ -1,15 +1,13 @@
 //
-//  RIViewController.h
+//  RIFetchModel.h
 //  DropboxSample
 //
 //  Created by Ali Gadzhiev on 12/25/12.
 //  Copyright (c) 2012 Red Iron. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RIModel.h"
 
-@interface RIViewController : UIViewController
-
-- (void)dbSessionDidChange;
+@interface DBFetchModel : RIModel
 
 @end

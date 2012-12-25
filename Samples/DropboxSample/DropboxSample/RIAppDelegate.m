@@ -7,16 +7,24 @@
 //
 
 #import "RIAppDelegate.h"
+#import "RIViewController.h"
 
 static NSString * const DBAppKey	= @"26gwggoedqktj1q";
 static NSString * const DBAppSecret	= @"7erqim2trojn3cd";
 
 @implementation RIAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[MagicalRecord setupCoreDataStackWithInMemoryStore];
+
 	DBSession * dbSession = [[DBSession alloc] initWithAppKey:DBAppKey appSecret:DBAppSecret root:kDBRootAppFolder]; // either kDBRootAppFolder or kDBRootDropbox
 	[DBSession setSharedSession:dbSession];
+	
+	RIViewController * viewController = [[RIViewController alloc] init];
+	
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.rootViewController = viewController;
+	[self.window makeKeyAndVisible];
 	
 	return YES;
 }
