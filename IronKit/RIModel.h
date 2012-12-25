@@ -19,6 +19,8 @@ extern NSString * const NIModelDidFailLoadNotification;
 @property (nonatomic, readonly, getter = isLoading) BOOL loading;
 @property (nonatomic, readonly, getter = isLoaded) BOOL loaded;
 
++ (id)model;
+
 - (void)load;
 - (void)cancelLoad;
 

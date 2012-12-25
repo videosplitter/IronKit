@@ -13,6 +13,10 @@ NSString * const NIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 
 @implementation RIModel
 
++ (id)model {
+	return [[self alloc] init];
+}
+
 - (void)load {
 	
 }
