@@ -54,7 +54,7 @@ NSString * const NIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 		if (error) {
 			[userInfo setObject:error forKey:@"error"];
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:NIModelDidFinishLoadNotification
+		[[NSNotificationCenter defaultCenter] postNotificationName:NIModelDidFailLoadNotification
 															object:self
 														  userInfo:userInfo];
 	};
