@@ -8,8 +8,8 @@
 
 #import "RIModel.h"
 
-NSString * const NIModelDidFinishLoadNotification	= @"com.ironkit.ModelDidFinishLoad";
-NSString * const NIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoad";
+NSString * const RIModelDidFinishLoadNotification	= @"com.ironkit.ModelDidFinishLoad";
+NSString * const RIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoad";
 
 @implementation RIModel
 
@@ -36,7 +36,7 @@ NSString * const NIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 		if (response) {
 			userInfo = @{ @"response" : response };
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:NIModelDidFinishLoadNotification
+		[[NSNotificationCenter defaultCenter] postNotificationName:RIModelDidFinishLoadNotification
 															object:self
 														  userInfo:userInfo];
 	};
@@ -58,7 +58,7 @@ NSString * const NIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 		if (error) {
 			[userInfo setObject:error forKey:@"error"];
 		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:NIModelDidFailLoadNotification
+		[[NSNotificationCenter defaultCenter] postNotificationName:RIModelDidFailLoadNotification
 															object:self
 														  userInfo:userInfo];
 	};

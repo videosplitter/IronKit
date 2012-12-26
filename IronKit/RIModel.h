@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const NIModelDidFinishLoadNotification;
-extern NSString * const NIModelDidFailLoadNotification;
+extern NSString * const RIModelDidFinishLoadNotification;
+extern NSString * const RIModelDidFailLoadNotification;
 
 @interface RIModel : NSObject {
 	__block BOOL _loading;
