@@ -16,7 +16,6 @@
 		41B15D531689E36F004A42B2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D521689E36F004A42B2 /* Default.png */; };
 		41B15D551689E36F004A42B2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D541689E36F004A42B2 /* Default@2x.png */; };
 		41B15D571689E36F004A42B2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41B15D561689E36F004A42B2 /* Default-568h@2x.png */; };
-		41B15D5D1689E36F004A42B2 /* RIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15D5C1689E36F004A42B2 /* RIViewController.m */; };
 		41B15F031689E472004A42B2 /* RISlideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F001689E472004A42B2 /* RISlideMenuController.m */; };
 		41B15F041689E472004A42B2 /* RITableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F021689E472004A42B2 /* RITableViewDataSource.m */; };
 		41B15F371689E4FB004A42B2 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F251689E4FB004A42B2 /* AFHTTPClient.m */; };
@@ -61,6 +60,11 @@
 		41B15FA01689E6A6004A42B2 /* RIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15F9F1689E6A6004A42B2 /* RIModel.m */; };
 		41B15FA51689EF3C004A42B2 /* DBFetchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FA41689EF3C004A42B2 /* DBFetchModel.m */; };
 		41B15FA81689EF5F004A42B2 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FA61689EF5F004A42B2 /* DataModel.xcdatamodeld */; };
+		41B15FB7168B073F004A42B2 /* DBFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FB6168B073F004A42B2 /* DBFolder.m */; };
+		41B15FBA168B0740004A42B2 /* DBItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FB9168B0740004A42B2 /* DBItem.m */; };
+		41B15FBD168B0740004A42B2 /* DBFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FBC168B0740004A42B2 /* DBFile.m */; };
+		41B15FC1168B0FFB004A42B2 /* RIRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FBF168B0FFB004A42B2 /* RIRootViewController.m */; };
+		41B15FC2168B0FFB004A42B2 /* RIRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41B15FC0168B0FFB004A42B2 /* RIRootViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,8 +81,6 @@
 		41B15D521689E36F004A42B2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		41B15D541689E36F004A42B2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		41B15D561689E36F004A42B2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		41B15D5B1689E36F004A42B2 /* RIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RIViewController.h; sourceTree = "<group>"; };
-		41B15D5C1689E36F004A42B2 /* RIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RIViewController.m; sourceTree = "<group>"; };
 		41B15EFF1689E472004A42B2 /* RISlideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RISlideMenuController.h; sourceTree = "<group>"; };
 		41B15F001689E472004A42B2 /* RISlideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RISlideMenuController.m; sourceTree = "<group>"; };
 		41B15F011689E472004A42B2 /* RITableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RITableViewDataSource.h; sourceTree = "<group>"; };
@@ -165,6 +167,15 @@
 		41B15FA31689EF3C004A42B2 /* DBFetchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFetchModel.h; sourceTree = "<group>"; };
 		41B15FA41689EF3C004A42B2 /* DBFetchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFetchModel.m; sourceTree = "<group>"; };
 		41B15FA71689EF5F004A42B2 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		41B15FB5168B073F004A42B2 /* DBFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFolder.h; sourceTree = "<group>"; };
+		41B15FB6168B073F004A42B2 /* DBFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFolder.m; sourceTree = "<group>"; };
+		41B15FB8168B0740004A42B2 /* DBItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBItem.h; sourceTree = "<group>"; };
+		41B15FB9168B0740004A42B2 /* DBItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBItem.m; sourceTree = "<group>"; };
+		41B15FBB168B0740004A42B2 /* DBFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBFile.h; sourceTree = "<group>"; };
+		41B15FBC168B0740004A42B2 /* DBFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBFile.m; sourceTree = "<group>"; };
+		41B15FBE168B0FFB004A42B2 /* RIRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIRootViewController.h; sourceTree = "<group>"; };
+		41B15FBF168B0FFB004A42B2 /* RIRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIRootViewController.m; sourceTree = "<group>"; };
+		41B15FC0168B0FFB004A42B2 /* RIRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RIRootViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +233,7 @@
 			children = (
 				41B15D4F1689E36F004A42B2 /* RIAppDelegate.h */,
 				41B15D501689E36F004A42B2 /* RIAppDelegate.m */,
+				41B15FB4168B0725004A42B2 /* Entities */,
 				41B15FA21689EF11004A42B2 /* Models */,
 				41B15FA11689EF06004A42B2 /* Controllers */,
 				41B15EFE1689E472004A42B2 /* IronKit */,
@@ -401,8 +413,9 @@
 		41B15FA11689EF06004A42B2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				41B15D5B1689E36F004A42B2 /* RIViewController.h */,
-				41B15D5C1689E36F004A42B2 /* RIViewController.m */,
+				41B15FBE168B0FFB004A42B2 /* RIRootViewController.h */,
+				41B15FBF168B0FFB004A42B2 /* RIRootViewController.m */,
+				41B15FC0168B0FFB004A42B2 /* RIRootViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -414,6 +427,19 @@
 				41B15FA41689EF3C004A42B2 /* DBFetchModel.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		41B15FB4168B0725004A42B2 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				41B15FBB168B0740004A42B2 /* DBFile.h */,
+				41B15FBC168B0740004A42B2 /* DBFile.m */,
+				41B15FB8168B0740004A42B2 /* DBItem.h */,
+				41B15FB9168B0740004A42B2 /* DBItem.m */,
+				41B15FB5168B073F004A42B2 /* DBFolder.h */,
+				41B15FB6168B073F004A42B2 /* DBFolder.m */,
+			);
+			name = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -472,6 +498,7 @@
 				41B15D531689E36F004A42B2 /* Default.png in Resources */,
 				41B15D551689E36F004A42B2 /* Default@2x.png in Resources */,
 				41B15D571689E36F004A42B2 /* Default-568h@2x.png in Resources */,
+				41B15FC2168B0FFB004A42B2 /* RIRootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,7 +511,6 @@
 			files = (
 				41B15D4D1689E36F004A42B2 /* main.m in Sources */,
 				41B15D511689E36F004A42B2 /* RIAppDelegate.m in Sources */,
-				41B15D5D1689E36F004A42B2 /* RIViewController.m in Sources */,
 				41B15F031689E472004A42B2 /* RISlideMenuController.m in Sources */,
 				41B15F041689E472004A42B2 /* RITableViewDataSource.m in Sources */,
 				41B15F371689E4FB004A42B2 /* AFHTTPClient.m in Sources */,
@@ -525,6 +551,10 @@
 				41B15FA01689E6A6004A42B2 /* RIModel.m in Sources */,
 				41B15FA51689EF3C004A42B2 /* DBFetchModel.m in Sources */,
 				41B15FA81689EF5F004A42B2 /* DataModel.xcdatamodeld in Sources */,
+				41B15FB7168B073F004A42B2 /* DBFolder.m in Sources */,
+				41B15FBA168B0740004A42B2 /* DBItem.m in Sources */,
+				41B15FBD168B0740004A42B2 /* DBFile.m in Sources */,
+				41B15FC1168B0FFB004A42B2 /* RIRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

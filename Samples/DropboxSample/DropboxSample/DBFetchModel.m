@@ -7,6 +7,8 @@
 //
 
 #import "DBFetchModel.h"
+#import "DBFolder.h"
+#import "DBFile.h"
 
 @interface DBFetchModel () <DBRestClientDelegate> {
 	DBRestClient * _restClient;
@@ -40,7 +42,27 @@
 #pragma mark - DBRestClient delegate
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-	[self didFinishLoadWithResponse:nil];
+	
+	__weak DBFetchModel * weakSelf = self;
+	[MagicalRecord saveInBackgroundWithBlock:^(NSManagedObjectContext *localContext) {
+		DBFolder * folder = [DBFolder MR_findFirstByAttribute:@"path" withValue:@"/" inContext:localContext];
+		if (!folder) {
+			folder = [DBFolder MR_createInContext:localContext];
+			folder.dbHash = metadata.hash;
+			folder.rev = metadata.rev;
+			folder.modified = metadata.lastModifiedDate;
+			folder.path = metadata.path;
+			folder.root = metadata.root;
+		} else if (![folder.rev isEqualToString:metadata.rev]) {
+			folder.dbHash = metadata.hash;
+			folder.rev = metadata.rev;
+			folder.modified = metadata.lastModifiedDate;
+		}
+		// TODO process 'contents'
+	} completion:^{
+		[weakSelf didFinishLoadWithResponse:nil];
+	}];
+	
 }
 
 - (void)restClient:(DBRestClient*)client metadataUnchangedAtPath:(NSString*)path {

@@ -7,7 +7,7 @@
 //
 
 #import "RIAppDelegate.h"
-#import "RIViewController.h"
+#import "RIRootViewController.h"
 
 static NSString * const DBAppKey	= @"26gwggoedqktj1q";
 static NSString * const DBAppSecret	= @"7erqim2trojn3cd";
@@ -20,7 +20,7 @@ static NSString * const DBAppSecret	= @"7erqim2trojn3cd";
 	DBSession * dbSession = [[DBSession alloc] initWithAppKey:DBAppKey appSecret:DBAppSecret root:kDBRootAppFolder]; // either kDBRootAppFolder or kDBRootDropbox
 	[DBSession setSharedSession:dbSession];
 	
-	RIViewController * viewController = [[RIViewController alloc] init];
+	RIRootViewController * viewController = [[RIRootViewController alloc] init];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = viewController;
