@@ -65,6 +65,8 @@
 		41B15FBD168B0740004A42B2 /* DBFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FBC168B0740004A42B2 /* DBFile.m */; };
 		41B15FC1168B0FFB004A42B2 /* RIRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FBF168B0FFB004A42B2 /* RIRootViewController.m */; };
 		41B15FC2168B0FFB004A42B2 /* RIRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41B15FC0168B0FFB004A42B2 /* RIRootViewController.xib */; };
+		41B15FC4168B1637004A42B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B15FC3168B1636004A42B2 /* MobileCoreServices.framework */; };
+		41B15FC7168B169A004A42B2 /* DBUploadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FC6168B169A004A42B2 /* DBUploadModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -176,6 +178,9 @@
 		41B15FBE168B0FFB004A42B2 /* RIRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIRootViewController.h; sourceTree = "<group>"; };
 		41B15FBF168B0FFB004A42B2 /* RIRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIRootViewController.m; sourceTree = "<group>"; };
 		41B15FC0168B0FFB004A42B2 /* RIRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RIRootViewController.xib; sourceTree = "<group>"; };
+		41B15FC3168B1636004A42B2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		41B15FC5168B1699004A42B2 /* DBUploadModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUploadModel.h; sourceTree = "<group>"; };
+		41B15FC6168B169A004A42B2 /* DBUploadModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUploadModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41B15FC4168B1637004A42B2 /* MobileCoreServices.framework in Frameworks */,
 				41B15F9D1689E5A1004A42B2 /* QuartzCore.framework in Frameworks */,
 				41B15F9B1689E593004A42B2 /* Security.framework in Frameworks */,
 				41B15F971689E55F004A42B2 /* CoreData.framework in Frameworks */,
@@ -217,6 +223,7 @@
 		41B15D3F1689E36F004A42B2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41B15FC3168B1636004A42B2 /* MobileCoreServices.framework */,
 				41B15F981689E585004A42B2 /* DropboxSDK.framework */,
 				41B15F9C1689E5A1004A42B2 /* QuartzCore.framework */,
 				41B15F9A1689E593004A42B2 /* Security.framework */,
@@ -425,6 +432,8 @@
 			children = (
 				41B15FA31689EF3C004A42B2 /* DBFetchModel.h */,
 				41B15FA41689EF3C004A42B2 /* DBFetchModel.m */,
+				41B15FC5168B1699004A42B2 /* DBUploadModel.h */,
+				41B15FC6168B169A004A42B2 /* DBUploadModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -555,6 +564,7 @@
 				41B15FBA168B0740004A42B2 /* DBItem.m in Sources */,
 				41B15FBD168B0740004A42B2 /* DBFile.m in Sources */,
 				41B15FC1168B0FFB004A42B2 /* RIRootViewController.m in Sources */,
+				41B15FC7168B169A004A42B2 /* DBUploadModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

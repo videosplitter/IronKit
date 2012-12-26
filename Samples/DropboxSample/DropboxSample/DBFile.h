@@ -13,7 +13,7 @@
 
 @interface DBFile : DBItem
 
-@property (nonatomic, retain) NSNumber * thumbExists;
+@property (nonatomic, retain) NSNumber * thumbnailExists;
 @property (nonatomic, retain) NSDate * clientMtime;
 
 @end

@@ -11,7 +11,7 @@
 
 @implementation DBFile
 
-@dynamic thumbExists;
+@dynamic thumbnailExists;
 @dynamic clientMtime;
 
 @end

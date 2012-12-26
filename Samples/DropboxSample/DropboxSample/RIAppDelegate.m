@@ -23,7 +23,7 @@ static NSString * const DBAppSecret	= @"7erqim2trojn3cd";
 	RIRootViewController * viewController = [[RIRootViewController alloc] init];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = viewController;
+	self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self.window makeKeyAndVisible];
 	
 	return YES;
