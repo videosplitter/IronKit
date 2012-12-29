@@ -57,7 +57,6 @@ CGFloat const kVelocityThreshold			= 1500.0;
 	if (_contentController) {
 		_contentController.view.frame = frame;
 		[self.view addSubview:_contentController.view];
-		_tapGestureRecognizer.enabled = YES;
 	} else if (_leftMenuController) {
 		_leftMenuController.view.frame = frame;
 		[self.view addSubview:_leftMenuController.view];
@@ -67,6 +66,7 @@ CGFloat const kVelocityThreshold			= 1500.0;
 		[self.view addSubview:_rightMenuController.view];
 		_rightMenuHidden = NO;
 	}
+	_tapGestureRecognizer.enabled = !_leftMenuHidden || !_rightMenuHidden;
 }
 
 - (void)didReceiveMemoryWarning {
