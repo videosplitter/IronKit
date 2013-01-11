@@ -14,7 +14,7 @@ CGFloat const kLedgeWidth					= 70.0;
 
 CGFloat const kVelocityThreshold			= 1500.0;
 
-@interface RISlideMenuController () {
+@interface RISlideMenuController () <UIGestureRecognizerDelegate> {
 	UIPanGestureRecognizer * _draggingGestureRecognizer;
 	UITapGestureRecognizer * _tapGestureRecognizer;
 	
@@ -27,6 +27,7 @@ CGFloat const kVelocityThreshold			= 1500.0;
 
 - (void)commonInit {
 	_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)];
+	_tapGestureRecognizer.delegate = self;
 	_draggingGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDragging)];
 	[_draggingGestureRecognizer requireGestureRecognizerToFail:_tapGestureRecognizer];
 }
@@ -67,6 +68,10 @@ CGFloat const kVelocityThreshold			= 1500.0;
 		_rightMenuHidden = NO;
 	}
 	_tapGestureRecognizer.enabled = !_leftMenuHidden || !_rightMenuHidden;
+	_contentController.view.userInteractionEnabled = !_tapGestureRecognizer.enabled;
+	
+	[self.view addGestureRecognizer:_draggingGestureRecognizer];
+	[self.view addGestureRecognizer:_tapGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,12 +123,6 @@ CGFloat const kVelocityThreshold			= 1500.0;
 		}
 	}
 	
-	[_contentController.view removeGestureRecognizer:_draggingGestureRecognizer];
-	[_contentController.view removeGestureRecognizer:_tapGestureRecognizer];
-	
-	[viewController.view addGestureRecognizer:_draggingGestureRecognizer];
-	[viewController.view addGestureRecognizer:_tapGestureRecognizer];
-	
 	[self willChangeValueForKey:@"contentController"];
 	_contentController = viewController;
 	[self didChangeValueForKey:@"contentController"];
@@ -162,6 +161,7 @@ CGFloat const kVelocityThreshold			= 1500.0;
 		}
 	}
 	_tapGestureRecognizer.enabled = !hidden;
+	_contentController.view.userInteractionEnabled = !_tapGestureRecognizer.enabled;
 	
 	[self willChangeValueForKey:@"leftMenuHidden"];
 	_leftMenuHidden = hidden;
@@ -171,6 +171,8 @@ CGFloat const kVelocityThreshold			= 1500.0;
 #pragma mark - Gesture handlers
 
 - (void)handleDragging {
+	if (!_contentController) return;
+	
 	CGRect bounds = self.view.bounds;
 	CGFloat rightBorder = bounds.size.width - kLedgeWidth;
 
@@ -208,12 +210,13 @@ CGFloat const kVelocityThreshold			= 1500.0;
 			_tapGestureRecognizer.enabled = YES;
 			contentFrame.origin.x = rightBorder;
 		}
-		
+		_contentController.view.userInteractionEnabled = !_tapGestureRecognizer.enabled;
 			
 		[UIView animateWithDuration:kTransitionDuration animations:^{
 			_contentController.view.frame = contentFrame;
 		} completion:^(BOOL finished) {
 			if (_leftMenuHidden) {
+				NSLog(@"removeFromSuperview");
 				[_leftMenuController.view removeFromSuperview];
 			}
 		}];
@@ -222,7 +225,20 @@ CGFloat const kVelocityThreshold			= 1500.0;
 }
 
 - (void)handleTap {
+	if (!_contentController) return;
+	
 	[self setLeftMenuHidden:YES animated:YES];
+}
+
+#pragma mark - Gesture recognizer delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+	if (gestureRecognizer == _tapGestureRecognizer) {
+		if (!CGRectContainsPoint(_contentController.view.bounds, [touch locationInView:_contentController.view])) {
+			return NO;
+		}
+	}
+	return YES;
 }
 
 @end
