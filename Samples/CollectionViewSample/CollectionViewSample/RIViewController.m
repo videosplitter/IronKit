@@ -36,11 +36,13 @@
 }
 
 - (NSInteger)collectionView:(RICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return section == 0 ? 2 : 4;
+	return section == 0 ? 60 : 60;
 }
 
 - (RICollectionViewCell *)collectionView:(RICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+    RICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithRed:indexPath.row * 1 / 255.0 green:indexPath.row * 2 / 255.0 blue:indexPath.row * 3 / 255.0 alpha:1.0];
+	return cell;
 }
 
 @end

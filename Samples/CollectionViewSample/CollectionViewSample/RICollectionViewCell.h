@@ -10,4 +10,8 @@
 
 @interface RICollectionViewCell : UIView
 
+@property (nonatomic, readonly, copy) NSString * reuseIdentifier;
+
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+
 @end

@@ -94,26 +94,23 @@ typedef NS_ENUM(NSInteger, RICollectionViewScrollDirection) {
 
 - (void)reloadData; // discard the dataSource and delegate data and requery as necessary
 
-- (void)setCollectionViewLayout:(UICollectionViewLayout *)layout animated:(BOOL)animated; // transition from one layout to another
+//- (void)setCollectionViewLayout:(RICollectionViewLayout *)layout animated:(BOOL)animated; // transition from one layout to another
 
 // Information about the current state of the collection view.
 
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath;
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
-
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;
 - (NSIndexPath *)indexPathForCell:(UICollectionViewCell *)cell;
 
-- (UICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (RICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (NSArray *)visibleCells;
 - (NSArray *)indexPathsForVisibleItems;
 
 // Interacting with the collection view.
 
-- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+//- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
 
 // These methods allow dynamic modification of the current set of items in the collection view
 - (void)insertSections:(NSIndexSet *)sections;

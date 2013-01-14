@@ -7,31 +7,44 @@
 //
 
 #import "RICollectionView.h"
+#import "RICollectionViewCell.h"
 
+@interface RICollectionView ()
 
-@interface RICollectionView () {
-	// Store sections frames in collection view coordinate system
-	NSMutableArray		* _sectionsFrames;
-	// Store items frames in section coordinate system
-	NSMutableArray		* _itemsFrames;
-	
-	NSMutableDictionary	* _registredCellClasses;
-}
+// Store sections frames in collection view coordinate system
+@property (strong, nonatomic) NSMutableArray * sectionsFrames;
+// Store items frames in section coordinate system
+@property (strong, nonatomic) NSMutableArray * itemsFrames;
+
+@property (strong, nonatomic) NSMutableDictionary * registredCellClasses;
+
+@property (copy, nonatomic) NSArray * indexPathsForVisibleItems;
+
+@property (strong, nonatomic) NSMutableDictionary * visibleCellsDictionary;
+@property (strong, nonatomic) NSMutableDictionary * reusableCells;
 
 @end
 
 @implementation RICollectionView
 
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"bounds"];
+}
+
 - (void)_init {
-	_itemSize = CGSizeMake(50.0, 50.0);
+	self.itemSize = CGSizeMake(50.0, 50.0);
 	
-	_allowsSelection = YES;
-	_allowsMultipleSelection = NO;
+	self.allowsSelection = YES;
+	self.allowsMultipleSelection = NO;
 	
-	_registredCellClasses = [NSMutableDictionary dictionary];
-	
-	_itemsFrames = [NSMutableArray array];
-	_sectionsFrames = [NSMutableArray array];
+	self.itemsFrames = [NSMutableArray array];
+	self.sectionsFrames = [NSMutableArray array];
+    
+    self.registredCellClasses = [NSMutableDictionary dictionary];
+    self.visibleCellsDictionary = [NSMutableDictionary dictionary];
+    self.reusableCells = [NSMutableDictionary dictionary];
+    
+    [self addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -54,76 +67,90 @@
 
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier {
 	NSAssert(identifier, @"Identifier can not be nil");
-	[_registredCellClasses setObject:NSStringFromClass(cellClass) forKey:identifier];
+    [self.reusableCells setObject:[NSMutableArray array] forKey:identifier];
+	[self.registredCellClasses setObject:NSStringFromClass(cellClass) forKey:identifier];
 }
 
 - (Class)_classForCellWithReuseIdentifier:(NSString *)identifier {
-	return NSClassFromString([_registredCellClasses objectForKey:identifier]);
+	return NSClassFromString([self.registredCellClasses objectForKey:identifier]);
+}
+
+#pragma mark - Dequeuing
+
+- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
+    NSMutableArray * cells = [self.reusableCells objectForKey:identifier];
+    if ([cells count] == 0) {
+        return [[RICollectionViewCell alloc] initWithReuseIdentifier:identifier];
+    }
+    
+    RICollectionViewCell * cell = [cells lastObject];
+    [cells removeObject:cell];
+    return cell;
+}
+
+#pragma mark - Reusing
+
+- (void)_reuseCell:(RICollectionViewCell *)cell {
+    NSMutableArray * cells = [self.reusableCells objectForKey:cell.reuseIdentifier];
+    [cells addObject:cell];
 }
 
 #pragma mark - Reloading
 
-- (void)_reloadSection:(NSInteger)section {
+- (void)_reloadSection:(NSInteger)section
+{
 	CGSize boundsSize = self.bounds.size;
 	int itemsInRow = 0;
 	
-	switch (self.scrollDirection) {
-		case RICollectionViewScrollDirectionVertical: {
-			itemsInRow = boundsSize.width / _itemSize.width;
+	switch (self.scrollDirection)
+    {
+		case RICollectionViewScrollDirectionVertical:
+        {
+			itemsInRow = boundsSize.width / self.itemSize.width;
 			break;
 		}
-		case RICollectionViewScrollDirectionHorizontal: {
-			itemsInRow = boundsSize.height / _itemSize.height;
+		case RICollectionViewScrollDirectionHorizontal:
+        {
+			itemsInRow = boundsSize.height / self.itemSize.height;
 			break;
 		}
 	}
-	
+    
+	// Compute items frames in section coordinate system
 	NSInteger numberOfItems = [self.dataSource collectionView:self numberOfItemsInSection:section];
 	NSMutableArray * itemsFrames = [NSMutableArray arrayWithCapacity:numberOfItems];
 	CGPoint origin = CGPointZero;
-	for (unsigned item = 0; item < numberOfItems; ++item) {
-//		switch (self.scrollDirection) {
-//			case RICollectionViewScrollDirectionVertical: {
-//				row = item / ();
-//				origin.x += _itemSize.width;
-//				if (origin.x > boundsSize.width) {
-//					origin.x = 0;
-//					origin.y += _itemSize.height;
-//				}
-//				break;
-//			}
-//			case RICollectionViewScrollDirectionHorizontal: {
-//				origin.y += _itemSize.height;
-//				if (origin.y > boundsSize.height) {
-//					origin.x += _itemSize.width;
-//					origin.y = 0;
-//				}
-//				break;
-//			}
-//		}
-		
-		switch (self.scrollDirection) {
-			case RICollectionViewScrollDirectionVertical: {
-				origin.x = item / itemsInRow;
-				origin.y = item % itemsInRow;
+	for (unsigned item = 0; item < numberOfItems; ++item)
+    {
+        int row = item / itemsInRow;
+        int col = item % itemsInRow;
+		switch (self.scrollDirection)
+        {
+			case RICollectionViewScrollDirectionVertical:
+            {
+				origin.x = col * self.itemSize.width;
+				origin.y = row * self.itemSize.height;
 				break;
 			}
-			case RICollectionViewScrollDirectionHorizontal: {
-				origin.x = item % itemsInRow;
-				origin.y = item / itemsInRow;
+			case RICollectionViewScrollDirectionHorizontal:
+            {
+				origin.x = row * self.itemSize.width;
+				origin.y = col * self.itemSize.height;
 				break;
 			}
 		}
 		
-		CGRect itemFrame = {origin, _itemSize};
+		CGRect itemFrame = {origin, self.itemSize};
 		[itemsFrames addObject:[NSValue value:&itemFrame withObjCType:@encode(CGRect)]];
 	}
 	
+    // Compute section frame
 	CGRect sectionFrame = CGRectZero;
-	if (section > 0) {
+	if (section > 0)
+    {
 		// Set current section frame.origin from previous section frame
 		CGRect previousSectionFrame;
-		NSValue * value = [_sectionsFrames objectAtIndex:section - 1];
+		NSValue * value = [self.sectionsFrames objectAtIndex:section - 1];
 		[value getValue:&previousSectionFrame];
 		
 		switch (self.scrollDirection) {
@@ -140,6 +167,7 @@
 		}
 	}
 	
+    // Get section frame size from last item frame in section
 	CGRect lastItemFrame;
 	[(NSValue *)[itemsFrames lastObject] getValue:&lastItemFrame];
 	switch (self.scrollDirection) {
@@ -155,34 +183,117 @@
 		}
 	}
 	
-	[_sectionsFrames replaceObjectAtIndex:section withObject:[NSValue value:&sectionFrame withObjCType:@encode(CGRect)]];
-	[_itemsFrames replaceObjectAtIndex:section withObject:itemsFrames];
+    self.sectionsFrames[section] = [NSValue value:&sectionFrame withObjCType:@encode(CGRect)];
+    self.itemsFrames[section] = itemsFrames;
 }
 
 - (void)reloadData {
-	[_sectionsFrames removeAllObjects];
-	[_itemsFrames removeAllObjects];
+	[self.sectionsFrames removeAllObjects];
+	[self.itemsFrames removeAllObjects];
 	
 	NSInteger numberOfSections = 1;
-	if ([self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]) {
+	if ([self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)])
+    {
 		numberOfSections = [self.dataSource numberOfSectionsInCollectionView:self];
 	}
 	
-	for (unsigned section = 0; section < numberOfSections; ++section) {
-		[_sectionsFrames addObject:[NSMutableArray array]];
-		[_itemsFrames addObject:[NSMutableArray array]];
+	for (unsigned section = 0; section < numberOfSections; ++section)
+    {
+		[self.sectionsFrames addObject:[NSMutableArray array]];
+		[self.itemsFrames addObject:[NSMutableArray array]];
 		
 		[self _reloadSection:section];
 	}
-	
-	NSLog(@"%@", _sectionsFrames);
-	NSLog(@"%@", _itemsFrames);
+    
+    // Compute contentSize
+    CGRect lastSectionFrame;
+    [(NSValue *)[self.sectionsFrames lastObject] getValue:&lastSectionFrame];
+    CGSize contentSize = CGSizeZero;
+    contentSize.width = CGRectGetMaxX(lastSectionFrame);
+    contentSize.height = CGRectGetMaxY(lastSectionFrame);
+    self.contentSize = contentSize;
+    
+    [self _computeIndexPathsForVisibleItems];
+    [self _layoutVisibleCells];
 }
 
 - (void)reloadSections:(NSIndexSet *)sections {
-//	for (unsigned section = 0; section < numberOfSections; ++section) {
-//		[self _reloadSection:];
-//	}
+}
+
+- (RICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+    if (!cell) {
+        cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+    }
+    return cell;
+}
+
+#pragma mark - Computing visible items
+
+- (void)_computeIndexPathsForVisibleItems
+{
+    NSMutableArray * indexPathForVisibleItems = [NSMutableArray array];
+    // Find first visible section frame
+    for (unsigned section = 0; section < [self.sectionsFrames count]; ++section)
+    {
+        CGRect sectionFrame;
+        [(NSValue *)self.sectionsFrames[section] getValue:&sectionFrame];
+        if (CGRectIntersectsRect(self.bounds, sectionFrame))
+        {
+            // Find all visible items frames
+            NSArray * frames = self.itemsFrames[section];
+            for (unsigned item = 0; item < [frames count]; ++item)
+            {
+                CGRect itemFrame;
+                [(NSValue *)frames[item] getValue:&itemFrame];
+                if (CGRectIntersectsRect(self.bounds, itemFrame))
+                {
+                    [indexPathForVisibleItems addObject:[NSIndexPath indexPathForRow:item inSection:section]];
+                }
+            }
+        }
+    }
+    self.indexPathsForVisibleItems = indexPathForVisibleItems;
+}
+
+- (CGRect)_frameForCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGRect cellFrame;
+    [(NSValue *)self.itemsFrames[indexPath.section][indexPath.row] getValue:&cellFrame];
+    CGRect sectionFrame;
+    [(NSValue *)self.sectionsFrames[indexPath.section] getValue:&sectionFrame];
+    cellFrame.origin.x += sectionFrame.origin.x;
+    cellFrame.origin.y += sectionFrame.origin.y;
+    return cellFrame;
+}
+
+- (void)_layoutVisibleCells
+{
+    for (NSIndexPath * indexPath in [self.visibleCellsDictionary allKeys]) {
+        if (![self.indexPathsForVisibleItems containsObject:indexPath]) {
+            RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+            [self _reuseCell:cell];
+            [cell removeFromSuperview];
+            [self.visibleCellsDictionary removeObjectForKey:indexPath];
+        }
+    }
+    
+    for (NSIndexPath * indexPath in self.indexPathsForVisibleItems)
+    {
+        RICollectionViewCell * cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+        cell.frame = [self _frameForCellAtIndexPath:indexPath];
+        [self insertSubview:cell atIndex:0];
+        [self.visibleCellsDictionary setObject:cell forKey:indexPath];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self) {
+        if ([keyPath isEqualToString:@"bounds"]) {
+            [self _computeIndexPathsForVisibleItems];
+            [self _layoutVisibleCells];
+        }
+    }
 }
 
 @end
