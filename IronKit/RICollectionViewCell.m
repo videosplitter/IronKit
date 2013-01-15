@@ -57,6 +57,10 @@
     return self;
 }
 
+- (void)prepareForReuse {
+    
+}
+
 - (void)setBackgroundView:(UIView *)view
 {
     if (view != _backgroundView)
@@ -117,7 +121,7 @@
             self.backgroundView.frame = self.bounds;
             [self insertSubview:self.backgroundView belowSubview:self.contentView];
         }
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:animated ? 0.2 : 0.0 animations:^{
             self.selectedBackgroundView.alpha = (_selected) ? 1.0 : 0.0;
         } completion:^(BOOL finished) {
             if (_selected)
@@ -156,7 +160,7 @@
             self.backgroundView.alpha = 0.0;
             [self insertSubview:self.backgroundView belowSubview:self.contentView];
         }
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:animated ? 0.2 : 0.0 animations:^{
             if (_highlighted)
             {
                 self.selectedBackgroundView.alpha = 1.0;

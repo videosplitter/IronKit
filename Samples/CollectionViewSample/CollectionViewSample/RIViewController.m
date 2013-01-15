@@ -45,13 +45,14 @@
 //    _numberOfItemsInSecondSection += 10;
 //    [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
     
-    _colorCorrection += 10;
-    NSArray * indexPaths = [NSArray arrayWithObjects:
-                            [NSIndexPath indexPathForRow:5 inSection:1],
-                            [NSIndexPath indexPathForRow:3 inSection:0],
-                            [NSIndexPath indexPathForRow:7 inSection:2],
-                            nil];
-    [_collectionView reloadItemsAtIndexPaths:indexPaths];
+//    _colorCorrection += 10;
+//    NSArray * indexPaths = [NSArray arrayWithObjects:
+//                            [NSIndexPath indexPathForRow:5 inSection:1],
+//                            [NSIndexPath indexPathForRow:3 inSection:0],
+//                            [NSIndexPath indexPathForRow:7 inSection:2],
+//                            nil];
+//    [_collectionView reloadItemsAtIndexPaths:indexPaths];
+    [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]]];
 }
 
 #pragma mark - Collection view data source
