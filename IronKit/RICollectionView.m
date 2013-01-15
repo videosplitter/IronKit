@@ -19,9 +19,12 @@
 @property (strong, nonatomic) NSMutableDictionary * registredCellClasses;
 
 @property (copy, nonatomic) NSArray * indexPathsForVisibleItems;
+@property (copy, nonatomic) NSArray * indexPathsForSelectedItems;
 
 @property (strong, nonatomic) NSMutableDictionary * visibleCellsDictionary;
 @property (strong, nonatomic) NSMutableDictionary * reusableCells;
+
+@property (strong, nonatomic) UITapGestureRecognizer * tapGestureRecognizer;
 
 @end
 
@@ -43,6 +46,9 @@
     self.registredCellClasses = [NSMutableDictionary dictionary];
     self.visibleCellsDictionary = [NSMutableDictionary dictionary];
     self.reusableCells = [NSMutableDictionary dictionary];
+    
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap)];
+    [self addGestureRecognizer:self.tapGestureRecognizer];
     
     [self addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew context:nil];
 }
@@ -90,9 +96,153 @@
 
 #pragma mark - Reusing
 
-- (void)_reuseCell:(RICollectionViewCell *)cell {
+- (void)_reuseCell:(RICollectionViewCell *)cell
+{
     NSMutableArray * cells = [self.reusableCells objectForKey:cell.reuseIdentifier];
     [cells addObject:cell];
+}
+
+- (NSInteger)numberOfSections
+{
+    return [self.sectionsFrames count];
+}
+
+- (NSInteger)numberOfItemsInSection:(NSInteger)section
+{
+    return [(NSArray *)self.itemsFrames[section] count];
+}
+
+- (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point
+{
+    NSIndexPath * indexPath = nil;
+    for (unsigned section = 0; section < [self.sectionsFrames count]; ++section)
+    {
+        CGRect sectionFrame;
+        [(NSValue *)self.sectionsFrames[section] getValue:&sectionFrame];
+        if (CGRectContainsPoint(sectionFrame, point))
+        {
+            NSArray * sectionItemsFrames = self.itemsFrames[section];
+            for (unsigned item = 0; item < [sectionItemsFrames count]; ++item)
+            {
+                NSIndexPath * currentIndexPath = [NSIndexPath indexPathForRow:item inSection:section];
+                CGRect itemFrame = [self _frameForCellAtIndexPath:currentIndexPath];
+                if (CGRectContainsPoint(itemFrame, point))
+                {
+                    indexPath = currentIndexPath;
+                    break;
+                }
+            }
+            break;
+        }
+    }
+    return indexPath;
+}
+
+- (NSIndexPath *)indexPathForCell:(RICollectionViewCell *)cell
+{
+    __block NSIndexPath * indexPath = nil;
+    [self.visibleCellsDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (obj == cell)
+        {
+            indexPath = key;
+            *stop = YES;
+        }
+    }];
+    return indexPath;
+}
+
+#pragma mark - Selecting
+
+- (void)handleTap
+{
+    switch (self.tapGestureRecognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            NSIndexPath * indexPath = [self indexPathForItemAtPoint:[self.tapGestureRecognizer locationInView:self]];
+            if (![self.indexPathsForSelectedItems containsObject:indexPath])
+            {
+                RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+                [cell setHighlighted:YES animated:YES];
+            }
+            break;
+        }
+        case UIGestureRecognizerStateCancelled:
+        {
+            NSIndexPath * indexPath = [self indexPathForItemAtPoint:[self.tapGestureRecognizer locationInView:self]];
+            if (![self.indexPathsForSelectedItems containsObject:indexPath])
+            {
+                RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+                [cell setHighlighted:NO animated:YES];
+            }
+            break;
+        }
+        case UIGestureRecognizerStateEnded:
+        {
+            NSIndexPath * indexPath = [self indexPathForItemAtPoint:[self.tapGestureRecognizer locationInView:self]];
+            if ([self.indexPathsForSelectedItems containsObject:indexPath])
+            {
+                if (self.allowsMultipleSelection)
+                {
+                    [self deselectItemAtIndexPath:indexPath animated:YES];
+                }
+            }
+            else
+            {
+                [self selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionBottom];
+            }
+            break;
+        }
+            
+        default:
+        {
+            break;
+        }
+    }
+}
+
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+{
+    NSAssert(indexPath, @"Index path cannot be nil");
+    if ([self.indexPathsForSelectedItems containsObject:indexPath]) return;
+    
+    if (self.allowsMultipleSelection)
+    {
+        RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+        [cell setSelected:YES animated:animated];
+     
+        NSMutableArray * indexPaths = [NSMutableArray arrayWithArray:self.indexPathsForSelectedItems];
+        [indexPaths addObject:indexPath];
+        self.indexPathsForSelectedItems = indexPaths;
+    }
+    else
+    {
+        NSIndexPath * currentSelectedIndexPath = [self.indexPathsForSelectedItems lastObject];
+        if (currentSelectedIndexPath)
+        {
+            RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:currentSelectedIndexPath];
+            [cell setSelected:NO animated:animated];
+        }
+        
+        RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+        [cell setSelected:YES animated:animated];
+        
+        self.indexPathsForSelectedItems = [NSArray arrayWithObject:indexPath];
+    }
+}
+
+- (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
+{
+    NSAssert(indexPath, @"Index path cannot be nil");
+    if (![self.indexPathsForSelectedItems containsObject:indexPath]) return;
+    
+    NSMutableArray * indexPaths = [NSMutableArray arrayWithArray:self.indexPathsForSelectedItems];
+    [indexPaths removeObject:indexPath];
+    
+    RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+    [cell setSelected:NO animated:animated];
+    
+    self.indexPathsForSelectedItems = [indexPaths count] > 0 ? indexPaths : nil;
 }
 
 #pragma mark - Reloading
@@ -236,6 +386,8 @@
     [self _layout];
 }
 
+#pragma mark - Dynamic modification cells
+
 - (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths {
     for (NSIndexPath * indexPath in indexPaths) {
         if (![self.indexPathsForVisibleItems containsObject:indexPath]) {
@@ -256,12 +408,24 @@
 
 #pragma mark - Getting cells
 
+- (void)insertItemsAtIndexPaths:(NSArray *)indexPaths {
+    
+}
+
+- (void)deleteItemsAtIndexPaths:(NSArray *)indexPaths {
+    
+}
+
 - (RICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
     if (!cell) {
         cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
     }
     return cell;
+}
+
+- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
+    
 }
 
 #pragma mark - Computing visible items
@@ -284,8 +448,6 @@
                 CGRect itemFrame = [self _frameForCellAtIndexPath:indexPath];
                 if (CGRectIntersectsRect(self.bounds, itemFrame))
                 {
-//                    NSLog(@"indexPath %@", indexPath);
-//                    NSLog(@"frame %@", NSStringFromCGRect(itemFrame));
                     [indexPathForVisibleItems addObject:indexPath];
                 }
             }
@@ -321,6 +483,10 @@
         RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
         if (!cell) {
             cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+            if ([self.indexPathsForSelectedItems containsObject:indexPath])
+            {
+                [cell setSelected:YES animated:NO];
+            }
         }
         
         cell.frame = [self _frameForCellAtIndexPath:indexPath];
@@ -333,6 +499,8 @@
     [self _computeIndexPathsForVisibleItems];
     [self _layoutVisibleCells];
 }
+
+#pragma mark - Observing
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == self) {

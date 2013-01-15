@@ -10,8 +10,17 @@
 
 @interface RICollectionViewCell : UIView
 
+@property (nonatomic, getter=isSelected) BOOL selected;
+@property (nonatomic, getter=isHighlighted) BOOL highlighted;
+
 @property (nonatomic, readonly, copy) NSString * reuseIdentifier;
+@property (nonatomic, readonly, strong) UIView * contentView;
+@property (nonatomic, strong) UIView * backgroundView;
+@property (nonatomic, strong) UIView * selectedBackgroundView;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 
 @end

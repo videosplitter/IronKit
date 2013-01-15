@@ -25,8 +25,9 @@
     
     _numberOfItemsInSecondSection = 20;
 	
-	[_collectionView registerClass:[RICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
-	[_collectionView reloadData];
+    self.collectionView.allowsMultipleSelection = YES;
+	[self.collectionView registerClass:[RICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+	[self.collectionView reloadData];
     
     UIButton * button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(50, 50, 100, 50);

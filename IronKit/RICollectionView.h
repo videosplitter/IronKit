@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, RICollectionViewScrollDirection) {
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 - (NSIndexPath *)indexPathForItemAtPoint:(CGPoint)point;
-- (NSIndexPath *)indexPathForCell:(UICollectionViewCell *)cell;
+- (NSIndexPath *)indexPathForCell:(RICollectionViewCell *)cell;
 
 - (RICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (NSArray *)visibleCells;
