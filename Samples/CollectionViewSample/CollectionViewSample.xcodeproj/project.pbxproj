@@ -41,8 +41,8 @@
 		418E4A48169F074300011B2D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RIViewController.xib; sourceTree = "<group>"; };
 		418E4A54169F099D00011B2D /* RICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RICollectionView.h; path = ../../../IronKit/RICollectionView.h; sourceTree = "<group>"; };
 		418E4A55169F099D00011B2D /* RICollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RICollectionView.m; path = ../../../IronKit/RICollectionView.m; sourceTree = "<group>"; };
-		418E4A57169F0EB800011B2D /* RICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RICollectionViewCell.h; sourceTree = "<group>"; };
-		418E4A58169F0EB800011B2D /* RICollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RICollectionViewCell.m; sourceTree = "<group>"; };
+		418E4A57169F0EB800011B2D /* RICollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RICollectionViewCell.h; path = ../../../IronKit/RICollectionViewCell.h; sourceTree = "<group>"; };
+		418E4A58169F0EB800011B2D /* RICollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RICollectionViewCell.m; path = ../../../IronKit/RICollectionViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +313,7 @@
 				418E4A4E169F074300011B2D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
