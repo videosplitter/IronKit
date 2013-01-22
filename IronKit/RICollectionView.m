@@ -7,7 +7,6 @@
 //
 
 #import "RICollectionView.h"
-#import "RICollectionViewCell.h"
 
 @interface RICollectionViewCell (ReusableIdentifier)
 
@@ -41,6 +40,8 @@
 }
 
 - (void)_init {
+    self.backgroundColor = [UIColor clearColor];
+    
 	self.itemSize = CGSizeMake(50.0, 50.0);
 	
 	self.allowsSelection = YES;
@@ -92,7 +93,9 @@
 - (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
     NSMutableArray * cells = [self.reusableCells objectForKey:identifier];
     if ([cells count] == 0) {
-        RICollectionViewCell * cell = [[RICollectionViewCell alloc] init];
+        NSString * className = [self.registredCellClasses objectForKey:identifier];
+        Class class = NSClassFromString(className);
+        RICollectionViewCell * cell = [[class alloc] init];
         cell.reuseIdentifier = identifier;
         return cell;
     }
@@ -112,6 +115,8 @@
     NSMutableArray * cells = [self.reusableCells objectForKey:cell.reuseIdentifier];
     [cells addObject:cell];
 }
+
+#pragma mark - Information about current state
 
 - (NSInteger)numberOfSections
 {
@@ -160,6 +165,11 @@
         }
     }];
     return indexPath;
+}
+
+- (NSArray *)visibleCells
+{
+    return [self.visibleCellsDictionary allValues];
 }
 
 #pragma mark - Selecting
@@ -268,7 +278,7 @@
     self.contentSize = contentSize;
 }
 
-- (void)_computeSectionFrame:(NSInteger)section
+- (void)_recomputeSectionFrame:(NSInteger)section
 {
     CGRect sectionFrame = CGRectZero;
     if (section > 0)
@@ -370,7 +380,7 @@
     
     for (unsigned nextSection = section; nextSection < [self.sectionsFrames count]; ++nextSection)
     {
-        [self _computeSectionFrame:nextSection];
+        [self _recomputeSectionFrame:nextSection];
     }
 }
 
@@ -397,6 +407,18 @@
     [self _layoutVisibleCells];
 }
 
+#pragma mark - Dynamic modification sections
+
+- (void)insertSections:(NSIndexSet *)sections
+{
+    
+}
+
+- (void)deleteSections:(NSIndexSet *)sections
+{
+    
+}
+
 - (void)reloadSections:(NSIndexSet *)sections {
     [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         [self _reloadSection:idx];
@@ -406,7 +428,39 @@
     [self _layout];
 }
 
-#pragma mark - Dynamic modification cells
+- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection
+{
+    NSMutableArray * newSectionsFrames = [self.sectionsFrames mutableCopy];
+    NSMutableArray * newItemsFrames = [self.itemsFrames mutableCopy];
+    
+    NSValue * sectionFrameValue = newSectionsFrames[section];
+    NSArray * sectionItemsFrames = newItemsFrames[section];
+    
+    [newSectionsFrames removeObjectAtIndex:section];
+    [newItemsFrames removeObjectAtIndex:section];
+    
+    [newSectionsFrames insertObject:sectionFrameValue atIndex:newSection];
+    [newItemsFrames insertObject:sectionItemsFrames atIndex:newSection];
+    
+    self.sectionsFrames = newSectionsFrames;
+    for (unsigned section = 0; section < [self.sectionsFrames count]; ++section)
+    {
+		[self _recomputeSectionFrame:section];
+	}
+    self.itemsFrames = newItemsFrames;
+    
+    self.indexPathsForVisibleItems = nil;
+    [self.visibleCellsDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        RICollectionViewCell * cell = obj;
+        [self _reuseCell:cell];
+        [cell removeFromSuperview];
+    }];
+    [self.visibleCellsDictionary removeAllObjects];
+    
+    [self _layout];
+}
+
+#pragma mark - Dynamic modification items
 
 - (void)reloadItemsAtIndexPaths:(NSArray *)indexPaths
 {
@@ -428,8 +482,6 @@
         [self.visibleCellsDictionary setObject:cell forKey:indexPath];
     }
 }
-
-#pragma mark - Getting cells
 
 - (void)insertItemsAtIndexPaths:(NSArray *)indexPaths
 {
@@ -490,7 +542,7 @@
         
         for (unsigned nextSection = indexPath.section; nextSection < [self.sectionsFrames count]; ++nextSection)
         {
-            [self _computeSectionFrame:nextSection];
+            [self _recomputeSectionFrame:nextSection];
         }
     }
     

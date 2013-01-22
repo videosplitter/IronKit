@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RICollectionViewCell.h"
 
 typedef NS_ENUM(NSInteger, RICollectionViewScrollDirection) {
 	RICollectionViewScrollDirectionVertical,
@@ -14,7 +15,6 @@ typedef NS_ENUM(NSInteger, RICollectionViewScrollDirection) {
 };
 
 @class RICollectionView;
-@class RICollectionViewCell;
 
 @protocol RICollectionViewDataSource <NSObject>
 @required
