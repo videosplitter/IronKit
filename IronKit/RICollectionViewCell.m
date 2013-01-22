@@ -21,6 +21,7 @@
     UIView * view = [[UIView alloc] initWithFrame:self.bounds];
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.contentView = view;
+    [self addSubview:self.contentView];
     
     UIView * selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
     selectedBackgroundView.backgroundColor = [UIColor blueColor];
@@ -43,16 +44,6 @@
     if (self)
     {
         [self _commonInit];
-    }
-    return self;
-}
-
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super init];
-    if (self)
-    {
-        self.reuseIdentifier = reuseIdentifier;
     }
     return self;
 }
