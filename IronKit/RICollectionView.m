@@ -31,6 +31,8 @@
 
 @property (strong, nonatomic) UITapGestureRecognizer * tapGestureRecognizer;
 
+@property (strong, nonatomic) NSMutableArray * indexPathsToModify;
+
 @end
 
 @implementation RICollectionView
@@ -109,6 +111,8 @@
 
 - (void)_reuseCell:(RICollectionViewCell *)cell
 {
+    if (!cell) return;
+    
     cell.selected = NO;
     cell.highlighted = NO;
     [cell prepareForReuse];
@@ -172,7 +176,31 @@
     return [self.visibleCellsDictionary allValues];
 }
 
+- (RICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+    if (!cell)
+    {
+        cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+    }
+    return cell;
+}
+
 #pragma mark - Selecting
+
+- (void)setIndexPathsForSelectedItems:(NSArray *)indexPaths
+{
+    _indexPathsForSelectedItems = [indexPaths count] == 0 ? nil : [indexPaths copy];
+}
+
+- (void)setAllowsMultipleSelection:(BOOL)allows
+{
+    if (_allowsMultipleSelection == allows) return;
+    
+    _allowsMultipleSelection = allows;
+    self.indexPathsForSelectedItems = nil;
+    [self _layoutVisibleCells];
+}
 
 - (void)handleTap
 {
@@ -232,9 +260,14 @@
         RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
         [cell setSelected:YES animated:animated];
      
-        NSMutableArray * indexPaths = [NSMutableArray arrayWithArray:self.indexPathsForSelectedItems];
-        [indexPaths addObject:indexPath];
-        self.indexPathsForSelectedItems = indexPaths;
+        NSMutableArray * newIndexPathsForSelectedItems = [NSMutableArray arrayWithArray:self.indexPathsForSelectedItems];
+        [newIndexPathsForSelectedItems addObject:indexPath];
+        self.indexPathsForSelectedItems = newIndexPathsForSelectedItems;
+        
+        if ([self.delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)])
+        {
+            [self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
+        }
     }
     else
     {
@@ -248,22 +281,29 @@
         RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
         [cell setSelected:YES animated:animated];
         
-        self.indexPathsForSelectedItems = [NSArray arrayWithObject:indexPath];
+        self.indexPathsForSelectedItems = @[indexPath];
+        
+        if ([self.delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)])
+        {
+            [self.delegate collectionView:self didSelectItemAtIndexPath:indexPath];
+        }
     }
 }
 
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
 {
-    NSAssert(indexPath, @"Index path cannot be nil");
-    if (![self.indexPathsForSelectedItems containsObject:indexPath]) return;
+    if (!indexPath || ![self.indexPathsForSelectedItems containsObject:indexPath]) return;
     
     NSMutableArray * indexPaths = [NSMutableArray arrayWithArray:self.indexPathsForSelectedItems];
     [indexPaths removeObject:indexPath];
+    self.indexPathsForSelectedItems = indexPaths;
     
     RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
     [cell setSelected:NO animated:animated];
-    
-    self.indexPathsForSelectedItems = [indexPaths count] > 0 ? indexPaths : nil;
+    if ([self.delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)])
+    {
+        [self.delegate collectionView:self didDeselectItemAtIndexPath:indexPath];
+    }
 }
 
 #pragma mark - Reloading
@@ -409,6 +449,40 @@
 
 #pragma mark - Dynamic modification sections
 
+- (void)beginUpdates
+{
+    NSAssert(self.indexPathsToModify == nil, @"");
+    self.indexPathsToModify = [NSMutableArray array];
+}
+
+- (void)endUpdates
+{
+    NSAssert(self.indexPathsToModify != nil, @"");
+    
+    [self.indexPathsToModify sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(NSIndexPath *)[obj2 valueForKey:@"indexPath"] compare:[obj1 valueForKey:@"indexPath"]];
+    }];
+    
+    for (NSDictionary * modifyObject in self.indexPathsToModify)
+    {
+        NSIndexPath * indexPath = modifyObject[@"indexPath"];
+        NSString * action = modifyObject[@"action"];
+        if ([action isEqualToString:@"insert"])
+        {
+            [self _insertItemAtIndexPath:indexPath];
+        }
+        else if ([action isEqualToString:@"delete"])
+        {
+            [self _deleteItemAtIndexPath:indexPath];
+        }
+    }
+    
+    [self _computeContentSize];
+    [self _layout];
+    
+    self.indexPathsToModify = nil;
+}
+
 - (void)insertSections:(NSIndexSet *)sections
 {
     
@@ -478,13 +552,101 @@
         
         cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
         cell.frame = [self _frameForCellAtIndexPath:indexPath];
-        [self insertSubview:cell atIndex:0];
         [self.visibleCellsDictionary setObject:cell forKey:indexPath];
+        
+        if ([self.delegate respondsToSelector:@selector(collectionView:willDisplayItemAtIndexPath:)])
+        {
+            [self.delegate collectionView:self willDisplayItemAtIndexPath:indexPath];
+        }
+        
+        [self insertSubview:cell atIndex:0];
     }
+}
+
+- (void)_insertItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGSize boundsSize = self.bounds.size;
+	int itemsInRow = 0;
+	
+	switch (self.scrollDirection)
+    {
+		case RICollectionViewScrollDirectionVertical:
+        {
+			itemsInRow = boundsSize.width / self.itemSize.width;
+			break;
+		}
+		case RICollectionViewScrollDirectionHorizontal:
+        {
+			itemsInRow = boundsSize.height / self.itemSize.height;
+			break;
+		}
+	}
+    
+    NSMutableArray * newIndexPathsForSelectedItems = [self.indexPathsForSelectedItems mutableCopy];
+    for (unsigned i = 0; i < [newIndexPathsForSelectedItems count]; ++i)
+    {
+        NSIndexPath * indexPathForSelectedItem = newIndexPathsForSelectedItems[i];
+        if (indexPathForSelectedItem.section == indexPath.section &&
+            indexPathForSelectedItem.row >= indexPath.row)
+        {
+            newIndexPathsForSelectedItems[i] = [NSIndexPath indexPathForRow:indexPathForSelectedItem.row + 1 inSection:indexPathForSelectedItem.section];
+        }
+    }
+    NSMutableArray * sectionItemsFrames = [(NSArray *)self.itemsFrames[indexPath.section] mutableCopy];
+    CGPoint origin = CGPointZero;
+    
+    int item = [sectionItemsFrames count];
+    int row = item / itemsInRow;
+    int col = item % itemsInRow;
+    switch (self.scrollDirection)
+    {
+        case RICollectionViewScrollDirectionVertical:
+        {
+            origin.x = col * self.itemSize.width;
+            origin.y = row * self.itemSize.height;
+            break;
+        }
+        case RICollectionViewScrollDirectionHorizontal:
+        {
+            origin.x = row * self.itemSize.width;
+            origin.y = col * self.itemSize.height;
+            break;
+        }
+    }
+    
+    CGRect itemFrame = {origin, self.itemSize};
+    sectionItemsFrames[item] = [NSValue value:&itemFrame withObjCType:@encode(CGRect)];
+    self.itemsFrames[indexPath.section] = [sectionItemsFrames copy];
+    
+    for (unsigned nextSection = indexPath.section; nextSection < [self.sectionsFrames count]; ++nextSection)
+    {
+        [self _recomputeSectionFrame:nextSection];
+    }
+    
+    // Reorder visible cells
+    NSMutableDictionary * newVisibleCellsDictionary = [NSMutableDictionary dictionary];
+    [self.visibleCellsDictionary enumerateKeysAndObjectsUsingBlock:^(NSIndexPath * key, id obj, BOOL *stop) {
+        if (key.section == indexPath.section && key.row >= indexPath.row)
+        {
+            newVisibleCellsDictionary[[NSIndexPath indexPathForRow:(key.row + 1) inSection:key.section]] = obj;
+        }
+        else
+        {
+            newVisibleCellsDictionary[key] = obj;
+        }
+    }];
+    self.visibleCellsDictionary = newVisibleCellsDictionary;
 }
 
 - (void)insertItemsAtIndexPaths:(NSArray *)indexPaths
 {
+    NSAssert(self.indexPathsToModify != nil, @"You must call beginUpdates: method before insert any item");
+    for (NSIndexPath * indexPath in indexPaths)
+    {
+        [self.indexPathsToModify addObject:@{ @"indexPath" : indexPath, @"action" : @"insert" }];
+    }
+    
+    /*
     CGSize boundsSize = self.bounds.size;
 	int itemsInRow = 0;
 	
@@ -560,21 +722,59 @@
     
     [self _computeContentSize];
     [self _layout];
+     */
+}
+
+- (void)_deleteItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Update self.indexPathsForSelectedItems
+    NSMutableArray * newIndexPathsForSelectedItems = [self.indexPathsForSelectedItems mutableCopy];
+    [newIndexPathsForSelectedItems removeObject:indexPath];
+    for (unsigned i = 0; i < [newIndexPathsForSelectedItems count]; ++i)
+    {
+        NSIndexPath * indexPathForSelectedItem = newIndexPathsForSelectedItems[i];
+        if (indexPathForSelectedItem.section == indexPath.section && indexPathForSelectedItem.row >= indexPath.row)
+        {
+            newIndexPathsForSelectedItems[i] = [NSIndexPath indexPathForRow:indexPathForSelectedItem.row - 1 inSection:indexPathForSelectedItem.section];
+        }
+    }
+    self.indexPathsForSelectedItems = newIndexPathsForSelectedItems;
+    
+    NSMutableArray * sectionItemsFrames = [(NSArray *)self.itemsFrames[indexPath.section] mutableCopy];
+    [sectionItemsFrames removeLastObject];
+    self.itemsFrames[indexPath.section] = [sectionItemsFrames copy];
+    
+    for (unsigned nextSection = indexPath.section; nextSection < [self.sectionsFrames count]; ++nextSection)
+    {
+        [self _recomputeSectionFrame:nextSection];
+    }
+    
+    // Reorder visible cells
+    RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
+    [self _reuseCell:cell];
+    [cell removeFromSuperview];
+    [self.visibleCellsDictionary removeObjectForKey:indexPath];
+    NSMutableDictionary * newVisibleCellsDictionary = [NSMutableDictionary dictionary];
+    [self.visibleCellsDictionary enumerateKeysAndObjectsUsingBlock:^(NSIndexPath * key, id obj, BOOL *stop) {
+        if (key.section == indexPath.section && key.row > indexPath.row)
+        {
+            newVisibleCellsDictionary[[NSIndexPath indexPathForRow:(key.row - 1) inSection:key.section]] = obj;
+        }
+        else
+        {
+            newVisibleCellsDictionary[key] = obj;
+        }
+    }];
+    self.visibleCellsDictionary = newVisibleCellsDictionary;
 }
 
 - (void)deleteItemsAtIndexPaths:(NSArray *)indexPaths
 {
-    
-}
-
-- (RICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
-    if (!cell)
+    NSAssert(self.indexPathsToModify != nil, @"You must call beginUpdates: method before delete any section");
+    for (NSIndexPath * indexPath in indexPaths)
     {
-        cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
+        [self.indexPathsToModify addObject:@{ @"indexPath" : indexPath, @"action" : @"delete" }];
     }
-    return cell;
 }
 
 - (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
@@ -623,8 +823,10 @@
 
 - (void)_layoutVisibleCells
 {
-    for (NSIndexPath * indexPath in [self.visibleCellsDictionary allKeys]) {
-        if (![self.indexPathsForVisibleItems containsObject:indexPath]) {
+    for (NSIndexPath * indexPath in [self.visibleCellsDictionary allKeys])
+    {
+        if (![self.indexPathsForVisibleItems containsObject:indexPath])
+        {
             RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
             [self _reuseCell:cell];
             [cell removeFromSuperview];
@@ -635,17 +837,23 @@
     for (NSIndexPath * indexPath in self.indexPathsForVisibleItems)
     {
         RICollectionViewCell * cell = [self.visibleCellsDictionary objectForKey:indexPath];
-        if (!cell) {
+        if (!cell)
+        {
             cell = [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
             if ([self.indexPathsForSelectedItems containsObject:indexPath])
             {
                 [cell setSelected:YES animated:NO];
             }
+            
+            [self.visibleCellsDictionary setObject:cell forKey:indexPath];
+            if ([self.delegate respondsToSelector:@selector(collectionView:willDisplayItemAtIndexPath:)])
+            {
+                [self.delegate collectionView:self willDisplayItemAtIndexPath:indexPath];
+            }
         }
         
         cell.frame = [self _frameForCellAtIndexPath:indexPath];
         [self insertSubview:cell atIndex:0];
-        [self.visibleCellsDictionary setObject:cell forKey:indexPath];
     }
 }
 

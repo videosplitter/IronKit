@@ -60,6 +60,8 @@ typedef NS_ENUM(NSInteger, RICollectionViewScrollDirection) {
 - (BOOL)collectionView:(RICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
 - (void)collectionView:(RICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
 
+- (void)collectionView:(RICollectionView *)collectionView willDisplayItemAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @interface RICollectionView : UIScrollView
@@ -108,6 +110,9 @@ typedef NS_ENUM(NSInteger, RICollectionViewScrollDirection) {
 // Interacting with the collection view.
 
 //- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+
+- (void)beginUpdates;
+- (void)endUpdates;
 
 // These methods allow dynamic modification of the current set of items in the collection view
 - (void)insertSections:(NSIndexSet *)sections;
