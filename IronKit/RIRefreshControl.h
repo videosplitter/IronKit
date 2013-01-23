@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, RIRefrechControlLayout) {
 @interface RIRefreshControl : UIControl
 
 @property (nonatomic) RIRefrechControlLayout layout;
+@property (nonatomic, strong) UIView * activityIndicator;
 @property (nonatomic, readonly, weak) UIScrollView * scrollView;
 @property (nonatomic, readonly) UILabel * textLabel;
 @property (nonatomic, readonly, getter = isRefreshing) BOOL refreshing;

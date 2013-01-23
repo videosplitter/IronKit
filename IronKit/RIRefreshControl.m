@@ -10,42 +10,55 @@
 
 #import "RIRefreshControl.h"
 
-static CGFloat const kMaxInset				= 60.0;
+static CGFloat const kMaxInset				= 70.0;
 static CGFloat const kFastAnimationDuration	= 0.2;
 
 @interface RIRefreshControl ()
+{
+    UIView * _activityIndicator;
+    UILabel * _textLabel;
+}
 
 @property (nonatomic, readwrite, weak) UIScrollView * scrollView;
+@property (nonatomic, readwrite, getter = isRefreshing) BOOL refreshing;
 
 @end
 
 @implementation RIRefreshControl
 
-- (void)commonInit {
-	_layout = RIRefrechControlLayoutTop;
-	
-	_textLabel = [[UILabel alloc] init];
-	_textLabel.text = NSLocalizedString(@"Pull to refresh...", nil);
-	_textLabel.backgroundColor = [UIColor clearColor];
-	[self addSubview:_textLabel];
+- (void)dealloc
+{
+    [self removeObserver:self forKeyPath:@"scrollView.contentOffset"];
+    [self removeObserver:self forKeyPath:@"scrollView.frame"];
+    [self removeObserver:self forKeyPath:@"scrollView.contentSize"];
+}
+
+- (void)_init
+{
+    self.backgroundColor = [UIColor clearColor];
+	self.layout = RIRefrechControlLayoutTop;
 	
 	[self addObserver:self forKeyPath:@"scrollView.contentOffset" options:NSKeyValueObservingOptionNew context:nil];
 	[self addObserver:self forKeyPath:@"scrollView.frame" options:NSKeyValueObservingOptionNew context:nil];
 	[self addObserver:self forKeyPath:@"scrollView.contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
 	self = [super initWithCoder:aDecoder];
-	if (self) {
-		[self commonInit];
+	if (self)
+    {
+		[self _init];
 	}
 	return self;
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
 	self = [super initWithFrame:frame];
-	if (self) {
-		[self commonInit];
+	if (self)
+    {
+		[self _init];
 	}
 	return self;
 }
@@ -68,23 +81,91 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 	[self didChangeValueForKey:@"scrollView"];
 }
 
+- (UILabel *)textLabel
+{
+    if (!_textLabel)
+    {
+        UILabel * textLabel = [[UILabel alloc] init];
+        textLabel.text = NSLocalizedString(@"Pull to refresh...", nil);
+        textLabel.backgroundColor = [UIColor clearColor];
+        _textLabel = textLabel;
+        [self addSubview:_textLabel];
+    }
+    return _textLabel;
+}
+
+- (UIView *)activityIndicator
+{
+    if (!_activityIndicator)
+    {
+        UIActivityIndicatorView * activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityView.hidesWhenStopped = YES;
+        self.activityIndicator = activityView;
+    }
+    return _activityIndicator;
+}
+
+- (void)setActivityIndicator:(UIView *)view
+{
+    if (_activityIndicator == view) return;
+    
+    [self willChangeValueForKey:@"activityIndicator"];
+    [_activityIndicator removeFromSuperview];
+    _activityIndicator = view;
+    if (_activityIndicator)
+    {
+        [self addSubview:_activityIndicator];
+    }
+    
+    if (self.refreshing)
+    {
+        if ([self.activityIndicator respondsToSelector:@selector(startAnimating)])
+        {
+            [self.activityIndicator performSelector:@selector(startAnimating)];
+        }
+        else
+        {
+            self.activityIndicator.hidden = NO;
+        }
+    }
+    else
+    {
+        if ([self.activityIndicator respondsToSelector:@selector(stopAnimating)])
+        {
+            [self.activityIndicator performSelector:@selector(stopAnimating)];
+        }
+        else
+        {
+            self.activityIndicator.hidden = YES;
+        }
+    }
+    
+    [self setNeedsLayout];
+    [self willChangeValueForKey:@"activityIndicator"];
+}
+
 - (void)_updateFrame {
 	CGSize scrollSize = _scrollView.frame.size;
 	CGSize contentSize = _scrollView.contentSize;
-	switch (_layout) {
-		case RIRefrechControlLayoutTop: {
+	switch (self.layout)
+    {
+		case RIRefrechControlLayoutTop:
+        {
 			self.frame = (CGRect) {CGPointMake(0.0, -scrollSize.height), scrollSize};
 			break;
 		}
-		case RIRefrechControlLayoutLeft: {
+		case RIRefrechControlLayoutLeft:
+        {
 			self.frame = (CGRect) {CGPointMake(-scrollSize.width, 0.0), scrollSize};
 			break;
 		}
-		case RIRefrechControlLayoutBottom: {
+		case RIRefrechControlLayoutBottom:
+        {
 			self.frame = (CGRect) {CGPointMake(0.0, contentSize.height + scrollSize.height), scrollSize};
 			break;
 		}
-		case RIRefrechControlLayoutRight: {
+		case RIRefrechControlLayoutRight:
+        {
 			self.frame = (CGRect) {CGPointMake(contentSize.width + scrollSize.width, 0.0), scrollSize};
 			break;
 		}
@@ -94,61 +175,92 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 
 #pragma mark - Public methods
 
-- (void)beginRefreshing {
-	if (_refreshing) return;
-	_refreshing = YES;
-	_textLabel.text = NSLocalizedString(@"Refreshing...", nil);
+- (void)beginRefreshing
+{
+	if (self.refreshing) return;
+	self.refreshing = YES;
+    
+	self.textLabel.text = NSLocalizedString(@"Refreshing...", nil);
+    if ([self.activityIndicator respondsToSelector:@selector(startAnimating)])
+    {
+        [self.activityIndicator performSelector:@selector(startAnimating)];
+    }
+    else
+    {
+        self.activityIndicator.hidden = NO;
+    }
 	[self setNeedsLayout];
 	[self sendActionsForControlEvents:UIControlEventValueChanged];
 	
-	if (_scrollView.dragging) return;
+	if (self.scrollView.dragging) return;
 	
-	CGFloat offset = MAX(_scrollView.contentOffset.y * -1, 0);
+	CGFloat offset = MAX(self.scrollView.contentOffset.y * -1, 0);
 	offset = MIN(offset, kMaxInset);
 	[UIView animateWithDuration:kFastAnimationDuration animations:^{
-		_scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
+		self.scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
 	}];
 }
 
-- (void)endRefreshing {
-	_refreshing = NO;
-	_textLabel.text = NSLocalizedString(@"Pull to refresh...", nil);
+- (void)endRefreshing
+{
+	self.refreshing = NO;
+	self.textLabel.text = NSLocalizedString(@"Pull to refresh...", nil);
+    if ([self.activityIndicator respondsToSelector:@selector(stopAnimating)])
+    {
+        [self.activityIndicator performSelector:@selector(stopAnimating)];
+    }
+    else
+    {
+        self.activityIndicator.hidden = YES;
+    }
 	[self setNeedsLayout];
 	[self sendActionsForControlEvents:UIControlEventValueChanged];
 	
 	[UIView animateWithDuration:kFastAnimationDuration animations:^{
-		_scrollView.contentInset = UIEdgeInsetsZero;
+		self.scrollView.contentInset = UIEdgeInsetsZero;
 	}];
 }
 
 #pragma mark - Observing
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if ([keyPath isEqualToString:@"scrollView.frame"] || [keyPath isEqualToString:@"scrollView.contentSize"]) {
+	if ([keyPath isEqualToString:@"scrollView.frame"] || [keyPath isEqualToString:@"scrollView.contentSize"])
+    {
 		[self _updateFrame];
-	} else if ([keyPath isEqualToString:@"scrollView.contentOffset"]) {
-		switch (_layout) {
-			case RIRefrechControlLayoutTop: {
-				if (_refreshing && !_scrollView.dragging) {
-					CGFloat offset = MAX(_scrollView.contentOffset.y * -1, 0);
+	}
+    else if ([keyPath isEqualToString:@"scrollView.contentOffset"])
+    {
+		switch (self.layout)
+        {
+			case RIRefrechControlLayoutTop:
+            {
+				if (self.refreshing && !self.scrollView.dragging)
+                {
+					CGFloat offset = MAX(self.scrollView.contentOffset.y * -1, 0);
 					offset = MIN(offset, kMaxInset);
 					[UIView animateWithDuration:kFastAnimationDuration animations:^{
-						_scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
+						self.scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
 					}];
-				} else {
-					if (_scrollView.contentOffset.y < -kMaxInset) {
+				}
+                else
+                {
+					if (self.scrollView.contentOffset.y < -kMaxInset)
+                    {
 						[self beginRefreshing];
 					}
 				}
 				break;
 			}
-			case RIRefrechControlLayoutLeft: {
+			case RIRefrechControlLayoutLeft:
+            {
 				break;
 			}
-			case RIRefrechControlLayoutBottom: {
+			case RIRefrechControlLayoutBottom:
+            {
 				break;
 			}
-			case RIRefrechControlLayoutRight: {
+			case RIRefrechControlLayoutRight:
+            {
 				break;
 			}
 		}
@@ -157,20 +269,27 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 
 #pragma mark - Layout
 
-- (void)layoutSubviews {
-	[_textLabel sizeToFit];
-	switch (_layout) {
-		case RIRefrechControlLayoutTop: {
-			_textLabel.center = CGPointMake(CGRectGetMidX(self.bounds), self.bounds.size.height - kMaxInset/2.0);
+- (void)layoutSubviews
+{
+	[self.textLabel sizeToFit];
+	switch (self.layout)
+    {
+		case RIRefrechControlLayoutTop:
+        {
+            self.activityIndicator.center = CGPointMake(kMaxInset/2.0, self.bounds.size.height - kMaxInset/2.0);
+			self.textLabel.center = CGPointMake(CGRectGetMidX(self.bounds), self.bounds.size.height - kMaxInset/2.0);
 			break;
 		}
-		case RIRefrechControlLayoutLeft: {
+		case RIRefrechControlLayoutLeft:
+        {
 			break;
 		}
-		case RIRefrechControlLayoutBottom: {
+		case RIRefrechControlLayoutBottom:
+        {
 			break;
 		}
-		case RIRefrechControlLayoutRight: {
+		case RIRefrechControlLayoutRight:
+        {
 			break;
 		}
 	}

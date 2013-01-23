@@ -35,10 +35,21 @@
 		cell.textLabel.text = [(Entity *)object name];
 	}];
 	_dataSource.tableView = self.tableView;
+    
+    NSMutableArray * images = [NSMutableArray array];
+    for (unsigned i = 1; i < 20; ++i)
+    {
+        NSString * index = [NSString stringWithFormat:i < 10 ? @"0%d" : @"%d", i];
+        [images addObject:[UIImage imageNamed:[NSString stringWithFormat:@"spinner00%@.png", index]]];
+    }
+    UIImageView * activityView = [[UIImageView alloc] init];
+    activityView.animationImages = images;
+    activityView.animationDuration = 1.0;
+    [activityView sizeToFit];
 	
 	RIRefreshControl * refreshControl = [[RIRefreshControl alloc] init];
+//    refreshControl.activityIndicator = activityView;
 	[refreshControl addTarget:self action:@selector(refreshControlDidChangeState:) forControlEvents:UIControlEventValueChanged];
-	refreshControl.backgroundColor = [UIColor grayColor];
 	self.tableView.refreshControl = refreshControl;
 }
 
