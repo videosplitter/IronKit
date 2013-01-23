@@ -8,135 +8,168 @@
 
 #import "RITableViewDataSource.h"
 
-@interface RITableViewDataSource () {
-	NSMutableDictionary	* _cellClasses;
-}
+@interface RITableViewDataSource ()
+
+@property (nonatomic, strong) NSMutableDictionary * cellClasses;
 
 @end
 
 @implementation RITableViewDataSource
 
-- (id)init {
+- (id)init
+{
 	self = [super init];
-	if (self) {
-		_cellClasses = [NSMutableDictionary dictionary];
-		_rowAnimation = UITableViewRowAnimationNone;
+	if (self)
+    {
+		self.cellClasses = [NSMutableDictionary dictionary];
+		self.rowAnimation = UITableViewRowAnimationNone;
 	}
 	return self;
 }
 
-- (void)setFetchedResults:(NSFetchedResultsController *)fetchedResults {
+- (void)setFetchedResults:(NSFetchedResultsController *)fetchedResults
+{
 	if (fetchedResults == _fetchedResults) return;
+    
 	_fetchedResults.delegate = nil;
 	_fetchedResults = fetchedResults;
 	_fetchedResults.delegate = self;
-	[_tableView reloadData];
+	[self.tableView reloadData];
 }
 
-- (void)setTableView:(UITableView *)tableView {
+- (void)setTableView:(UITableView *)tableView
+{
 	if (tableView == _tableView) return;
+    
 	_tableView.dataSource = nil;
 	_tableView = tableView;
 	_tableView.dataSource = self;
 	[_tableView reloadData];
 }
 
-- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier {
-	[_cellClasses setObject:cellClass forKey:identifier];
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier
+{
+	[self.cellClasses setObject:cellClass forKey:identifier];
 }
 
-- (id)objectAtIndexPath:(NSIndexPath *)indexPath {
-	return [_fetchedResults objectAtIndexPath:indexPath];
+- (id)objectAtIndexPath:(NSIndexPath *)indexPath
+{
+	return [self.fetchedResults objectAtIndexPath:indexPath];
 }
 
-- (NSIndexPath *)indexPathForObject:(id)object {
-	return [_fetchedResults indexPathForObject:object];
+- (NSIndexPath *)indexPathForObject:(id)object
+{
+	return [self.fetchedResults indexPathForObject:object];
 }
 
-- (UITableViewCell *)cellForObject:(id)object {
-	return [_tableView cellForRowAtIndexPath:[self indexPathForObject:object]];
+- (UITableViewCell *)cellForObject:(id)object
+{
+	return [self.tableView cellForRowAtIndexPath:[self indexPathForObject:object]];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [[_fetchedResults sections] count];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return [[self.fetchedResults sections] count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	id<NSFetchedResultsSectionInfo> sectionInfo = [[_fetchedResults sections] objectAtIndex:section];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResults sections] objectAtIndex:section];
 	return [sectionInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	NSString * identifier = nil;
-	if (_reusableIdentifierBlock) {
-		identifier = _reusableIdentifierBlock(indexPath);
+	if (self.reusableIdentifierBlock)
+    {
+		identifier = self.reusableIdentifierBlock(indexPath);
 	}
 	
-	Class cellClass = [_cellClasses objectForKey:identifier];
+	Class cellClass = [self.cellClasses objectForKey:identifier];
 	UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
 		cell = [(UITableViewCell *)[cellClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	}
 	
-	if (_configureCellBlock) {
-		_configureCellBlock(cell, indexPath, [_fetchedResults objectAtIndexPath:indexPath]);
+	if (self.configureCellBlock)
+    {
+		self.configureCellBlock(cell, indexPath, [self.fetchedResults objectAtIndexPath:indexPath]);
 	}
 	return cell;
 }
 
 #pragma mark - Fetched results controller delegate
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-	[_tableView beginUpdates];
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+	[self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo
-		   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-	switch (type) {
-		case NSFetchedResultsChangeInsert: {
-			[_tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:_rowAnimation];
+		   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+	switch (type)
+    {
+		case NSFetchedResultsChangeInsert:
+        {
+			[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:self.rowAnimation];
 			break;
 		}
 			
-		case NSFetchedResultsChangeDelete: {
-			[_tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:_rowAnimation];
+		case NSFetchedResultsChangeDelete:
+        {
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:self.rowAnimation];
 			break;
 		}
-		case NSFetchedResultsChangeMove: {
-			[_tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:_rowAnimation];
-			[_tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:_rowAnimation];
+		case NSFetchedResultsChangeMove:
+        {
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:self.rowAnimation];
+			[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:self.rowAnimation];
 			break;
 		}
 	}
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-	   atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	   atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
 	switch (type) {
-		case NSFetchedResultsChangeInsert: {
-			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:_rowAnimation];
+		case NSFetchedResultsChangeInsert:
+        {
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:self.rowAnimation];
 			break;
 		}
-		case NSFetchedResultsChangeDelete: {
-			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:_rowAnimation];
+		case NSFetchedResultsChangeDelete:
+        {
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:self.rowAnimation];
 			break;
 		}
-		case NSFetchedResultsChangeMove: {
-			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:_rowAnimation];
-			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:_rowAnimation];
+		case NSFetchedResultsChangeMove:
+        {
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:self.rowAnimation];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:self.rowAnimation];
 			break;
 		}
-		case NSFetchedResultsChangeUpdate: {
-			[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:_rowAnimation];
+		case NSFetchedResultsChangeUpdate:
+        {
+            BOOL selectRow = [[self.tableView indexPathsForSelectedRows] containsObject:indexPath];
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:self.rowAnimation];
+            if (selectRow)
+            {
+                [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            }
+            
 			break;
 		}
 	}
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	[_tableView endUpdates];
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+	[self.tableView endUpdates];
 }
 
 @end
