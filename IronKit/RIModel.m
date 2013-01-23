@@ -21,8 +21,12 @@ NSString * const RIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 	
 }
 
-- (void)cancelLoad {
-	[self didFailLoadWithError:nil canceled:YES];
+- (void)cancelLoad
+{
+	if (self.loading)
+    {
+        [self didFailLoadWithError:nil canceled:YES];
+    }
 }
 
 #pragma mark - Loading end points

@@ -203,6 +203,7 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 
 - (void)endRefreshing
 {
+    if (!self.refreshing) return;
 	self.refreshing = NO;
 	self.textLabel.text = NSLocalizedString(@"Pull to refresh...", nil);
     if ([self.activityIndicator respondsToSelector:@selector(stopAnimating)])
