@@ -49,6 +49,7 @@
 	
 	RIRefreshControl * refreshControl = [[RIRefreshControl alloc] init];
 //    refreshControl.activityIndicator = activityView;
+    refreshControl.arrowImage = [UIImage imageNamed:@"refresh.png"];
 	[refreshControl addTarget:self action:@selector(refreshControlDidChangeState:) forControlEvents:UIControlEventValueChanged];
 	self.tableView.refreshControl = refreshControl;
 }

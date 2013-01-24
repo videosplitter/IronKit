@@ -19,6 +19,7 @@ static CGFloat const kFastAnimationDuration	= 0.2;
     UILabel * _textLabel;
 }
 
+@property (nonatomic, strong) UIImageView * arrowImageView;
 @property (nonatomic, readwrite, weak) UIScrollView * scrollView;
 @property (nonatomic, readwrite, getter = isRefreshing) BOOL refreshing;
 
@@ -79,6 +80,28 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 	[self _updateFrame];
 	
 	[self didChangeValueForKey:@"scrollView"];
+}
+
+- (void)setArrowImage:(UIImage *)image
+{
+    self.arrowImageView.image = image;
+    [self.arrowImageView sizeToFit];
+    [self setNeedsLayout];
+}
+
+- (UIImage *)arrowImage
+{
+    return self.arrowImageView.image;
+}
+
+- (UIImageView *)arrowImageView
+{
+    if (!_arrowImageView)
+    {
+        _arrowImageView = [[UIImageView alloc] init];
+        [self addSubview:_arrowImageView];
+    }
+    return _arrowImageView;
 }
 
 - (UILabel *)textLabel
@@ -181,24 +204,28 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 	self.refreshing = YES;
     
 	self.textLabel.text = NSLocalizedString(@"Refreshing...", nil);
+	
     if ([self.activityIndicator respondsToSelector:@selector(startAnimating)])
     {
         [self.activityIndicator performSelector:@selector(startAnimating)];
     }
-    else
-    {
-        self.activityIndicator.hidden = NO;
-    }
-	[self setNeedsLayout];
-	[self sendActionsForControlEvents:UIControlEventValueChanged];
-	
-	if (self.scrollView.dragging) return;
-	
-	CGFloat offset = MAX(self.scrollView.contentOffset.y * -1, 0);
-	offset = MIN(offset, kMaxInset);
 	[UIView animateWithDuration:kFastAnimationDuration animations:^{
-		self.scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
+        if (!self.scrollView.dragging)
+        {
+            CGFloat offset = MAX(self.scrollView.contentOffset.y * -1, 0);
+            offset = MIN(offset, kMaxInset);
+            self.scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
+        }
+		
+        self.arrowImageView.alpha = 0.0;
+        if (![self.activityIndicator respondsToSelector:@selector(startAnimating)])
+        {
+            self.activityIndicator.alpha = 0.0;
+        }
 	}];
+    
+    [self setNeedsLayout];
+	[self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 - (void)endRefreshing
@@ -210,16 +237,17 @@ static CGFloat const kFastAnimationDuration	= 0.2;
     {
         [self.activityIndicator performSelector:@selector(stopAnimating)];
     }
-    else
-    {
-        self.activityIndicator.hidden = YES;
-    }
-	[self setNeedsLayout];
-	[self sendActionsForControlEvents:UIControlEventValueChanged];
 	
 	[UIView animateWithDuration:kFastAnimationDuration animations:^{
 		self.scrollView.contentInset = UIEdgeInsetsZero;
+        self.arrowImageView.alpha = 1.0;
+        if (![self.activityIndicator respondsToSelector:@selector(stopAnimating)])
+        {
+            self.activityIndicator.alpha = 1.0;
+        }
 	}];
+    [self setNeedsLayout];
+	[self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - Observing
@@ -277,6 +305,7 @@ static CGFloat const kFastAnimationDuration	= 0.2;
     {
 		case RIRefrechControlLayoutTop:
         {
+            self.arrowImageView.center =
             self.activityIndicator.center = CGPointMake(kMaxInset/2.0, self.bounds.size.height - kMaxInset/2.0);
 			self.textLabel.center = CGPointMake(CGRectGetMidX(self.bounds), self.bounds.size.height - kMaxInset/2.0);
 			break;

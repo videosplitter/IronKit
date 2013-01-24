@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, RIRefrechControlLayout) {
 @property (nonatomic, strong) UIView * activityIndicator;
 @property (nonatomic, readonly, weak) UIScrollView * scrollView;
 @property (nonatomic, readonly) UILabel * textLabel;
+@property (nonatomic, strong) UIImage * arrowImage;
 @property (nonatomic, readonly, getter = isRefreshing) BOOL refreshing;
 
 - (void)beginRefreshing;

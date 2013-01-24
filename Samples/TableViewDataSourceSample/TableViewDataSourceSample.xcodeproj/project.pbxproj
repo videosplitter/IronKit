@@ -67,6 +67,7 @@
 		41FB6CF316B00D88004A3970 /* spinner0018@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41FB6CDF16B00D88004A3970 /* spinner0018@2x.png */; };
 		41FB6CF416B00D88004A3970 /* spinner0019@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41FB6CE016B00D88004A3970 /* spinner0019@2x.png */; };
 		41FB6CF516B00D88004A3970 /* spinner0020@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41FB6CE116B00D88004A3970 /* spinner0020@2x.png */; };
+		41FB6D4716B1054E004A3970 /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41FB6D4616B1054E004A3970 /* refresh@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -166,6 +167,7 @@
 		41FB6CDF16B00D88004A3970 /* spinner0018@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spinner0018@2x.png"; sourceTree = "<group>"; };
 		41FB6CE016B00D88004A3970 /* spinner0019@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spinner0019@2x.png"; sourceTree = "<group>"; };
 		41FB6CE116B00D88004A3970 /* spinner0020@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spinner0020@2x.png"; sourceTree = "<group>"; };
+		41FB6D4616B1054E004A3970 /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,6 +385,7 @@
 		41FB6CCC16B00D88004A3970 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				41FB6D4616B1054E004A3970 /* refresh@2x.png */,
 				41FB6CCD16B00D88004A3970 /* Refresh animation */,
 			);
 			path = Images;
@@ -490,6 +493,7 @@
 				41FB6CF316B00D88004A3970 /* spinner0018@2x.png in Resources */,
 				41FB6CF416B00D88004A3970 /* spinner0019@2x.png in Resources */,
 				41FB6CF516B00D88004A3970 /* spinner0020@2x.png in Resources */,
+				41FB6D4716B1054E004A3970 /* refresh@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
