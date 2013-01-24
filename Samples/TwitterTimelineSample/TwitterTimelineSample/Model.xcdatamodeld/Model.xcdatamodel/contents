@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="TWTweet" representedClassName="TWTweet" syncable="YES">
+        <attribute name="createDate" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo>
+                <entry key="dateFormat" value="EEE MMM dd HH:mm:ss z yyyy"/>
+                <entry key="mappedKeyName" value="created_at"/>
+            </userInfo>
+        </attribute>
+        <attribute name="retweetCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="mappedKeyName" value="retweet_count"/>
+            </userInfo>
+        </attribute>
+        <attribute name="retweeted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tweetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="mappedKeyName" value="id"/>
+            </userInfo>
+        </attribute>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="TWUser" inverseName="tweets" inverseEntity="TWUser" syncable="YES"/>
+        <userInfo>
+            <entry key="relatedByAttribute" value="tweetId"/>
+        </userInfo>
+    </entity>
+    <entity name="TWUser" representedClassName="TWUser" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="mappedKeyName" value="id"/>
+            </userInfo>
+        </attribute>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TWTweet" inverseName="user" inverseEntity="TWTweet" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="TWTweet" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="TWUser" positionX="160" positionY="192" width="128" height="90"/>
+    </elements>
+</model>
