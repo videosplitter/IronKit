@@ -225,13 +225,12 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 	}];
     
     [self setNeedsLayout];
-	[self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 - (void)endRefreshing
 {
     if (!self.refreshing) return;
-	self.refreshing = NO;
+    
 	self.textLabel.text = NSLocalizedString(@"Pull to refresh...", nil);
     if ([self.activityIndicator respondsToSelector:@selector(stopAnimating)])
     {
@@ -240,14 +239,16 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 	
 	[UIView animateWithDuration:kFastAnimationDuration animations:^{
 		self.scrollView.contentInset = UIEdgeInsetsZero;
+        self.scrollView.contentOffset = CGPointZero;
         self.arrowImageView.alpha = 1.0;
         if (![self.activityIndicator respondsToSelector:@selector(stopAnimating)])
         {
             self.activityIndicator.alpha = 1.0;
         }
-	}];
+	} completion:^(BOOL finished) {
+        self.refreshing = NO;
+    }];
     [self setNeedsLayout];
-	[self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - Observing
@@ -270,14 +271,17 @@ static CGFloat const kFastAnimationDuration	= 0.2;
 					[UIView animateWithDuration:kFastAnimationDuration animations:^{
 						self.scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
 					}];
+                    break;
 				}
-                else
+                
+                if (self.scrollView.dragging && self.scrollView.contentOffset.y < -kMaxInset)
                 {
-					if (self.scrollView.contentOffset.y < -kMaxInset)
+                    if (!self.refreshing)
                     {
-						[self beginRefreshing];
-					}
-				}
+                        [self beginRefreshing];
+                        [self sendActionsForControlEvents:UIControlEventValueChanged];
+                    }
+                }
 				break;
 			}
 			case RIRefrechControlLayoutLeft:
