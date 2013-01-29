@@ -11,6 +11,13 @@
 NSString * const RIModelDidFinishLoadNotification	= @"com.ironkit.ModelDidFinishLoad";
 NSString * const RIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoad";
 
+@interface RIModel ()
+
+@property (nonatomic, readwrite, getter = isLoading) BOOL loading;
+@property (nonatomic, readwrite, getter = isLoaded) BOOL loaded;
+
+@end
+
 @implementation RIModel
 
 + (id)model {
@@ -32,16 +39,17 @@ NSString * const RIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 #pragma mark - Loading end points
 
 - (void)didFinishLoadWithResponse:(id)response {
+    __weak RIModel * weakSelf = self;
 	void (^block)(void) = ^{
-		_loading = NO;
-		_loaded = YES;
+		weakSelf.loading = NO;
+		weakSelf.loaded = YES;
 		
 		NSDictionary * userInfo = nil;
 		if (response) {
 			userInfo = @{ @"response" : response };
 		}
 		[[NSNotificationCenter defaultCenter] postNotificationName:RIModelDidFinishLoadNotification
-															object:self
+															object:weakSelf
 														  userInfo:userInfo];
 	};
 	
@@ -53,9 +61,10 @@ NSString * const RIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 }
 
 - (void)didFailLoadWithError:(NSError *)error canceled:(BOOL)canceled {
+    __weak RIModel * weakSelf = self;
 	void (^block)(void) = ^{
-		_loading = NO;
-		_loaded |= NO;
+		weakSelf.loading = NO;
+		weakSelf.loaded |= NO;
 		
 		NSMutableDictionary * userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithBool:canceled]
 																			forKey:@"canceled"];
@@ -63,7 +72,7 @@ NSString * const RIModelDidFailLoadNotification		= @"com.ironkit.ModelDidFailLoa
 			[userInfo setObject:error forKey:@"error"];
 		}
 		[[NSNotificationCenter defaultCenter] postNotificationName:RIModelDidFailLoadNotification
-															object:self
+															object:weakSelf
 														  userInfo:userInfo];
 	};
 	

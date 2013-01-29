@@ -7,6 +7,8 @@
 //
 
 #import "DBUploadModel.h"
+#import "RIModel+Private.h"
+
 #import "DBFile.h"
 
 @interface DBUploadModel () <DBRestClientDelegate> {
@@ -27,8 +29,8 @@
 }
 
 - (void)uploadFileWithName:(NSString *)name fromPath:(NSString *)path {
-	if (_loading) return;
-	_loading = YES;
+	if (self.loading) return;
+	self.loading = YES;
 	
 	[_restClient uploadFile:name toPath:@"/" withParentRev:nil fromPath:path];
 }

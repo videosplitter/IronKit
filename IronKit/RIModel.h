@@ -11,10 +11,7 @@
 extern NSString * const RIModelDidFinishLoadNotification;
 extern NSString * const RIModelDidFailLoadNotification;
 
-@interface RIModel : NSObject {
-	__block BOOL _loading;
-	__block BOOL _loaded;
-}
+@interface RIModel : NSObject
 
 @property (nonatomic, readonly, getter = isLoading) BOOL loading;
 @property (nonatomic, readonly, getter = isLoaded) BOOL loaded;

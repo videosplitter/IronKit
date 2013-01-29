@@ -7,6 +7,8 @@
 //
 
 #import "DBFetchModel.h"
+#import "RIModel+Private.h"
+
 #import "DBFolder.h"
 #import "DBFile.h"
 
@@ -28,8 +30,8 @@
 }
 
 - (void)load {
-	if (_loading) return;
-	_loading = YES;
+	if (self.loading) return;
+	self.loading = YES;
 	
 	[_restClient loadMetadata:@"/"];
 }

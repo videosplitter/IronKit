@@ -67,6 +67,7 @@
 		41B15FC2168B0FFB004A42B2 /* RIRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41B15FC0168B0FFB004A42B2 /* RIRootViewController.xib */; };
 		41B15FC4168B1637004A42B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B15FC3168B1636004A42B2 /* MobileCoreServices.framework */; };
 		41B15FC7168B169A004A42B2 /* DBUploadModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B15FC6168B169A004A42B2 /* DBUploadModel.m */; };
+		41D9B4F516B7D2C10069DADD /* RIModel+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D9B4F416B7D2C10069DADD /* RIModel+Private.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +182,8 @@
 		41B15FC3168B1636004A42B2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		41B15FC5168B1699004A42B2 /* DBUploadModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBUploadModel.h; sourceTree = "<group>"; };
 		41B15FC6168B169A004A42B2 /* DBUploadModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBUploadModel.m; sourceTree = "<group>"; };
+		41D9B4F316B7D2C10069DADD /* RIModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RIModel+Private.h"; sourceTree = "<group>"; };
+		41D9B4F416B7D2C10069DADD /* RIModel+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RIModel+Private.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +276,8 @@
 				41B15F021689E472004A42B2 /* RITableViewDataSource.m */,
 				41B15F9E1689E6A6004A42B2 /* RIModel.h */,
 				41B15F9F1689E6A6004A42B2 /* RIModel.m */,
+				41D9B4F316B7D2C10069DADD /* RIModel+Private.h */,
+				41D9B4F416B7D2C10069DADD /* RIModel+Private.m */,
 			);
 			name = IronKit;
 			path = ../../../IronKit;
@@ -565,6 +570,7 @@
 				41B15FBD168B0740004A42B2 /* DBFile.m in Sources */,
 				41B15FC1168B0FFB004A42B2 /* RIRootViewController.m in Sources */,
 				41B15FC7168B169A004A42B2 /* DBUploadModel.m in Sources */,
+				41D9B4F516B7D2C10069DADD /* RIModel+Private.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,6 +701,7 @@
 				41B15D621689E36F004A42B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
