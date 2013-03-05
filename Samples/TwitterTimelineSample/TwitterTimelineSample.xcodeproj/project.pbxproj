@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		412747901684EB8E0046073E /* RITableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4127478F1684EB8E0046073E /* RITableViewDataSource.m */; };
-		4127479A1684FA640046073E /* RILeftMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412747991684FA640046073E /* RILeftMenuViewController.m */; };
-		4127479D1684FB090046073E /* RIContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4127479C1684FB090046073E /* RIContentViewController.m */; };
-		412747A31685BFFA0046073E /* RISlideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 412747A21685BFFA0046073E /* RISlideMenuController.m */; };
 		41424E8B1684EA4E0057240D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41424E8A1684EA4E0057240D /* UIKit.framework */; };
 		41424E8D1684EA4E0057240D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41424E8C1684EA4E0057240D /* Foundation.framework */; };
 		41424E8F1684EA4E0057240D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41424E8E1684EA4E0057240D /* CoreGraphics.framework */; };
@@ -48,17 +45,19 @@
 		4142509F1684EAAF0057240D /* MagicalRecord+ShorthandSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 414250821684EAAF0057240D /* MagicalRecord+ShorthandSupport.m */; };
 		414250A01684EAAF0057240D /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 414250841684EAAF0057240D /* MagicalRecord.m */; };
 		414250A21684EAC20057240D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 414250A11684EAC20057240D /* CoreData.framework */; };
+		41FB6D2116B0855E004A3970 /* RITimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D2016B0855D004A3970 /* RITimelineViewController.m */; };
+		41FB6D2716B08576004A3970 /* RIDownloadController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D2416B08576004A3970 /* RIDownloadController.m */; };
+		41FB6D2816B08576004A3970 /* RIRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D2616B08576004A3970 /* RIRefreshControl.m */; };
+		41FB6D2D16B0863E004A3970 /* TWTimelineController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D2C16B0863E004A3970 /* TWTimelineController.m */; };
+		41FB6D3116B08665004A3970 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D2F16B08665004A3970 /* Model.xcdatamodeld */; };
+		41FB6D3316B0867C004A3970 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FB6D3216B0867C004A3970 /* Accounts.framework */; };
+		41FB6D3A16B09009004A3970 /* TWTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D3916B09009004A3970 /* TWTweet.m */; };
+		41FB6D3D16B0900A004A3970 /* TWUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D3C16B0900A004A3970 /* TWUser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4127478E1684EB8E0046073E /* RITableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RITableViewDataSource.h; sourceTree = "<group>"; };
 		4127478F1684EB8E0046073E /* RITableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RITableViewDataSource.m; sourceTree = "<group>"; };
-		412747921684EBCB0046073E /* RISlideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RISlideMenuController.h; sourceTree = "<group>"; };
-		412747981684FA640046073E /* RILeftMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RILeftMenuViewController.h; sourceTree = "<group>"; };
-		412747991684FA640046073E /* RILeftMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RILeftMenuViewController.m; sourceTree = "<group>"; };
-		4127479B1684FB090046073E /* RIContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIContentViewController.h; sourceTree = "<group>"; };
-		4127479C1684FB090046073E /* RIContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIContentViewController.m; sourceTree = "<group>"; };
-		412747A21685BFFA0046073E /* RISlideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RISlideMenuController.m; sourceTree = "<group>"; };
 		41424E861684EA4E0057240D /* TwitterTimelineSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterTimelineSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41424E8A1684EA4E0057240D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		41424E8C1684EA4E0057240D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -128,6 +127,20 @@
 		414250851684EAAF0057240D /* MagicalRecordShorthand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalRecordShorthand.h; sourceTree = "<group>"; };
 		414250861684EAAF0057240D /* CoreData+MagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreData+MagicalRecord.h"; sourceTree = "<group>"; };
 		414250A11684EAC20057240D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		41FB6D1F16B0855D004A3970 /* RITimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RITimelineViewController.h; sourceTree = "<group>"; };
+		41FB6D2016B0855D004A3970 /* RITimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RITimelineViewController.m; sourceTree = "<group>"; };
+		41FB6D2316B08576004A3970 /* RIDownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIDownloadController.h; sourceTree = "<group>"; };
+		41FB6D2416B08576004A3970 /* RIDownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIDownloadController.m; sourceTree = "<group>"; };
+		41FB6D2516B08576004A3970 /* RIRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIRefreshControl.h; sourceTree = "<group>"; };
+		41FB6D2616B08576004A3970 /* RIRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIRefreshControl.m; sourceTree = "<group>"; };
+		41FB6D2B16B0863E004A3970 /* TWTimelineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTimelineController.h; sourceTree = "<group>"; };
+		41FB6D2C16B0863E004A3970 /* TWTimelineController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTimelineController.m; sourceTree = "<group>"; };
+		41FB6D3016B08665004A3970 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		41FB6D3216B0867C004A3970 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		41FB6D3816B09009004A3970 /* TWTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTweet.h; sourceTree = "<group>"; };
+		41FB6D3916B09009004A3970 /* TWTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTweet.m; sourceTree = "<group>"; };
+		41FB6D3B16B0900A004A3970 /* TWUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWUser.h; sourceTree = "<group>"; };
+		41FB6D3C16B0900A004A3970 /* TWUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWUser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41FB6D3316B0867C004A3970 /* Accounts.framework in Frameworks */,
 				414250A21684EAC20057240D /* CoreData.framework in Frameworks */,
 				414250491684EA6A0057240D /* Twitter.framework in Frameworks */,
 				41424E8B1684EA4E0057240D /* UIKit.framework in Frameworks */,
@@ -149,8 +163,10 @@
 		4127478D1684EB8E0046073E /* IronKit */ = {
 			isa = PBXGroup;
 			children = (
-				412747921684EBCB0046073E /* RISlideMenuController.h */,
-				412747A21685BFFA0046073E /* RISlideMenuController.m */,
+				41FB6D2316B08576004A3970 /* RIDownloadController.h */,
+				41FB6D2416B08576004A3970 /* RIDownloadController.m */,
+				41FB6D2516B08576004A3970 /* RIRefreshControl.h */,
+				41FB6D2616B08576004A3970 /* RIRefreshControl.m */,
 				4127478E1684EB8E0046073E /* RITableViewDataSource.h */,
 				4127478F1684EB8E0046073E /* RITableViewDataSource.m */,
 			);
@@ -179,6 +195,7 @@
 		41424E891684EA4E0057240D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41FB6D3216B0867C004A3970 /* Accounts.framework */,
 				414250A11684EAC20057240D /* CoreData.framework */,
 				414250481684EA6A0057240D /* Twitter.framework */,
 				41424E8A1684EA4E0057240D /* UIKit.framework */,
@@ -193,10 +210,9 @@
 			children = (
 				41424E991684EA4E0057240D /* RIAppDelegate.h */,
 				41424E9A1684EA4E0057240D /* RIAppDelegate.m */,
-				412747981684FA640046073E /* RILeftMenuViewController.h */,
-				412747991684FA640046073E /* RILeftMenuViewController.m */,
-				4127479B1684FB090046073E /* RIContentViewController.h */,
-				4127479C1684FB090046073E /* RIContentViewController.m */,
+				41FB6D2E16B0864A004A3970 /* Models */,
+				41FB6D2A16B08618004A3970 /* Controllers */,
+				41FB6D2916B08583004A3970 /* ViewControllers */,
 				4127478D1684EB8E0046073E /* IronKit */,
 				41424E911684EA4E0057240D /* Supporting Files */,
 			);
@@ -327,6 +343,36 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		41FB6D2916B08583004A3970 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				41FB6D1F16B0855D004A3970 /* RITimelineViewController.h */,
+				41FB6D2016B0855D004A3970 /* RITimelineViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		41FB6D2A16B08618004A3970 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				41FB6D2B16B0863E004A3970 /* TWTimelineController.h */,
+				41FB6D2C16B0863E004A3970 /* TWTimelineController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		41FB6D2E16B0864A004A3970 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				41FB6D2F16B08665004A3970 /* Model.xcdatamodeld */,
+				41FB6D3B16B0900A004A3970 /* TWUser.h */,
+				41FB6D3C16B0900A004A3970 /* TWUser.m */,
+				41FB6D3816B09009004A3970 /* TWTweet.h */,
+				41FB6D3916B09009004A3970 /* TWTweet.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -422,9 +468,13 @@
 				4142509F1684EAAF0057240D /* MagicalRecord+ShorthandSupport.m in Sources */,
 				414250A01684EAAF0057240D /* MagicalRecord.m in Sources */,
 				412747901684EB8E0046073E /* RITableViewDataSource.m in Sources */,
-				4127479A1684FA640046073E /* RILeftMenuViewController.m in Sources */,
-				4127479D1684FB090046073E /* RIContentViewController.m in Sources */,
-				412747A31685BFFA0046073E /* RISlideMenuController.m in Sources */,
+				41FB6D2116B0855E004A3970 /* RITimelineViewController.m in Sources */,
+				41FB6D2716B08576004A3970 /* RIDownloadController.m in Sources */,
+				41FB6D2816B08576004A3970 /* RIRefreshControl.m in Sources */,
+				41FB6D2D16B0863E004A3970 /* TWTimelineController.m in Sources */,
+				41FB6D3116B08665004A3970 /* Model.xcdatamodeld in Sources */,
+				41FB6D3A16B09009004A3970 /* TWTweet.m in Sources */,
+				41FB6D3D16B0900A004A3970 /* TWUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +549,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TwitterTimelineSample/Prefix.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/TwitterTimelineSample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -512,6 +563,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TwitterTimelineSample/Prefix.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/TwitterTimelineSample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -540,6 +592,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		41FB6D2F16B08665004A3970 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				41FB6D3016B08665004A3970 /* Model.xcdatamodel */,
+			);
+			currentVersion = 41FB6D3016B08665004A3970 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 41424E7D1684EA4E0057240D /* Project object */;
 }

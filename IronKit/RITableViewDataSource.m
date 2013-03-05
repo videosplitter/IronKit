@@ -18,13 +18,20 @@
 
 - (id)init
 {
-	self = [super init];
-	if (self)
-    {
-		self.cellClasses = [NSMutableDictionary dictionary];
-		self.rowAnimation = UITableViewRowAnimationNone;
-	}
+	self = [self initWithFetchedResultsController:nil];
 	return self;
+}
+
+- (id)initWithFetchedResultsController:(NSFetchedResultsController *)fetchedResults
+{
+    self = [super init];
+    if (self)
+    {
+        self.fetchedResults = fetchedResults;
+        self.cellClasses = [NSMutableDictionary dictionary];
+		self.rowAnimation = UITableViewRowAnimationNone;
+    }
+    return self;
 }
 
 - (void)setFetchedResults:(NSFetchedResultsController *)fetchedResults

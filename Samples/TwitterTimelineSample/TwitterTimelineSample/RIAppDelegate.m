@@ -8,27 +8,21 @@
 
 #import "RIAppDelegate.h"
 
-#import "RISlideMenuController.h"
-#import "RILeftMenuViewController.h"
-#import "RIContentViewController.h"
+#import "RITimelineViewController.h"
 
 @implementation RIAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	
-	RISlideMenuController * swipeMenuController = [[RISlideMenuController alloc] init];
-	swipeMenuController.leftMenuController = [[RILeftMenuViewController alloc] init];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [MagicalRecord setupCoreDataStackWithInMemoryStore];
+    
+	RITimelineViewController * timelineController = [[RITimelineViewController alloc] init];
 	
 	// Override point for customization after application launch.
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = swipeMenuController;
+	self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:timelineController];
 	[self.window makeKeyAndVisible];
 	return YES;
-}
-
-- (void)leftMenuButtonPressed {
-	RISlideMenuController * swipController = (RISlideMenuController *)self.window.rootViewController;
-	[swipController setLeftMenuHidden:!swipController.leftMenuHidden animated:YES];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

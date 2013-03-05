@@ -16,6 +16,8 @@
 @property (nonatomic, copy) void(^configureCellBlock)(UITableViewCell * cell, NSIndexPath * indexPath, id object);
 @property (nonatomic, copy) NSString * (^reusableIdentifierBlock)(NSIndexPath * indexPath);
 
+- (id)initWithFetchedResultsController:(NSFetchedResultsController *)fetchedResults;
+
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
