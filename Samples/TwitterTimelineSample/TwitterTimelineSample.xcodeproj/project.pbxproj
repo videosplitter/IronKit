@@ -53,6 +53,7 @@
 		41FB6D3316B0867C004A3970 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FB6D3216B0867C004A3970 /* Accounts.framework */; };
 		41FB6D3A16B09009004A3970 /* TWTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D3916B09009004A3970 /* TWTweet.m */; };
 		41FB6D3D16B0900A004A3970 /* TWUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FB6D3C16B0900A004A3970 /* TWUser.m */; };
+		EF87F0221700CDCC00500DC2 /* RIInfinityTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EF87F0211700CDCC00500DC2 /* RIInfinityTableViewDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -141,6 +142,8 @@
 		41FB6D3916B09009004A3970 /* TWTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTweet.m; sourceTree = "<group>"; };
 		41FB6D3B16B0900A004A3970 /* TWUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWUser.h; sourceTree = "<group>"; };
 		41FB6D3C16B0900A004A3970 /* TWUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWUser.m; sourceTree = "<group>"; };
+		EF87F0201700CDCC00500DC2 /* RIInfinityTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIInfinityTableViewDataSource.h; sourceTree = "<group>"; };
+		EF87F0211700CDCC00500DC2 /* RIInfinityTableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIInfinityTableViewDataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +172,8 @@
 				41FB6D2616B08576004A3970 /* RIRefreshControl.m */,
 				4127478E1684EB8E0046073E /* RITableViewDataSource.h */,
 				4127478F1684EB8E0046073E /* RITableViewDataSource.m */,
+				EF87F0201700CDCC00500DC2 /* RIInfinityTableViewDataSource.h */,
+				EF87F0211700CDCC00500DC2 /* RIInfinityTableViewDataSource.m */,
 			);
 			name = IronKit;
 			path = ../../../IronKit;
@@ -475,6 +480,7 @@
 				41FB6D3116B08665004A3970 /* Model.xcdatamodeld in Sources */,
 				41FB6D3A16B09009004A3970 /* TWTweet.m in Sources */,
 				41FB6D3D16B0900A004A3970 /* TWUser.m in Sources */,
+				EF87F0221700CDCC00500DC2 /* RIInfinityTableViewDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

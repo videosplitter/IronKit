@@ -15,12 +15,14 @@
 @interface TWTimelineController ()
 
 @property (nonatomic, readwrite, getter = isLoading) BOOL loading;
+@property (nonatomic, readwrite) BOOL hasMore;
 @property (nonatomic, strong) ACAccountStore * accountStore;
 @property (nonatomic, strong) ACAccount * twitterAccount;
-
+@property (nonatomic, strong) NSNumber * lastID;
 @end
 
 @implementation TWTimelineController
+@synthesize hasMore = _hasMore;
 
 - (ACAccountStore *)accountStore
 {
@@ -31,13 +33,35 @@
     return _accountStore;
 }
 
+- (BOOL)loadMore
+{
+	if (self.loading) return NO;
+    self.loading = YES;
+	
+	if (!self.lastID) {
+		return NO;
+	}
+	
+	NSURL * URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/home_timeline.json?max_id=%@", self.lastID]];
+	[self loadURL:URL];
+	
+	return YES;
+}
+
 - (BOOL)reload
 {
     if (self.loading) return NO;
     self.loading = YES;
     
     NSURL * URL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
-    TWRequest * request = [[TWRequest alloc] initWithURL:URL parameters:nil requestMethod:TWRequestMethodGET];
+	[self loadURL:URL];
+	
+    return YES;
+}
+
+- (void)loadURL:(NSURL *)url
+{
+	TWRequest * request = [[TWRequest alloc] initWithURL:url parameters:nil requestMethod:TWRequestMethodGET];
     
     // We only want to receive Twitter accounts
     ACAccountType * twitterType = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -71,14 +95,26 @@
                 return;
             }
             
+			if ([urlResponse statusCode] == 429) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					NSString *message = [[[tweetsObjects valueForKey:@"errors"] objectAtIndex:0] valueForKey:@"message"];
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					[alert show];
+				});
+				[self didFailLoadWithError:nil];
+				return;
+			}
             NSLog(@"%@", tweetsObjects);
             [MagicalRecord saveInBackgroundWithBlock:^(NSManagedObjectContext *localContext) {
+				if (![tweetsObjects isKindOfClass:[NSArray class]]) {
+					return;
+				}
                 tweetsObjects = [tweetsObjects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                     return [[obj1 valueForKey:@"id"] compare:[obj2 valueForKey:@"id"]];
                 }];
                 NSArray * tweetsIds = [tweetsObjects valueForKey:@"id"];
                 
-                [TWTweet MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"NOT tweetId IN %@", tweetsIds] inContext:localContext];
+//                [TWTweet MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"NOT tweetId IN %@", tweetsIds] inContext:localContext];
                 NSArray * tweets = [TWTweet MR_findAllSortedBy:@"tweetId" ascending:YES
                                                  withPredicate:[NSPredicate predicateWithFormat:@"tweetId IN %@", tweetsIds] inContext:localContext];
                 NSEnumerator * tweetsEnumerator = [tweets objectEnumerator];
@@ -99,12 +135,14 @@
                     [tweet MR_importValuesForKeysWithObject:tweetObject];
                 }
             } completion:^{
+				TWTweet * lastTweet = [TWTweet MR_findFirstWithPredicate:nil sortedBy:@"tweetId" ascending:YES];
+				self.lastID = lastTweet.tweetId;
+				self.hasMore = ([tweetsObjects count] > 0);
                 [self didFinishLoadWithResponse:tweetsObjects];
             }];
         }];
     }];
 
-    return YES;
 }
 
 @end

@@ -9,14 +9,14 @@
 #import "RITimelineViewController.h"
 #import "TWTimelineController.h"
 #import "RIRefreshControl.h"
-#import "RITableViewDataSource.h"
+#import "RIInfinityTableViewDataSource.h"
 #import "TWTweet.h"
 
 @interface RITimelineViewController () <UITableViewDelegate, RIDownloadControllerDelegate>
 
 @property (nonatomic, strong) RIRefreshControl * refreshControl;
 
-@property (nonatomic, strong) RITableViewDataSource * dataSource;
+@property (nonatomic, strong) RIInfinityTableViewDataSource * dataSource;
 @property (nonatomic, strong) TWTimelineController * downloadController;
 
 @end
@@ -37,6 +37,7 @@
     
     self.tableView.refreshControl = self.refreshControl;
     self.dataSource.tableView = self.tableView;
+	[self.downloadController reload];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,19 +52,29 @@
     [super viewDidUnload];
 }
 
-- (RITableViewDataSource *)dataSource
+- (RIInfinityTableViewDataSource *)dataSource
 {
     if (!_dataSource)
     {
-        NSFetchedResultsController * fetchedResults = [TWTweet MR_fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"createDate" ascending:YES];
-        RITableViewDataSource * dataSource = [[RITableViewDataSource alloc] initWithFetchedResultsController:fetchedResults];
+        NSFetchedResultsController * fetchedResults = [TWTweet MR_fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"createDate" ascending:NO];
+        RIInfinityTableViewDataSource * dataSource = [[RIInfinityTableViewDataSource alloc] initWithFetchedResultsController:fetchedResults];
         [dataSource registerClass:[UITableViewCell class] forCellWithReuseIdentifier:@"Cell"];
         [dataSource setReusableIdentifierBlock:^NSString *(NSIndexPath * indexPath) {
             return @"Cell";
         }];
         [dataSource setConfigureCellBlock:^(UITableViewCell * cell, NSIndexPath * indexPath, TWTweet * tweet) {
+			
+			NSDateFormatter *dateFormatter = [NSDateFormatter new]; //вынести в static
+			[dateFormatter setDateFormat:@"HH:mm DD MMM YYYY"];
+			
+			[cell.textLabel setFont:[UIFont systemFontOfSize:14]];
             cell.textLabel.text = tweet.text;
+			
+			cell.detailTextLabel.text = [dateFormatter stringFromDate:tweet.createDate];
         }];
+		
+		[dataSource setLoadMoreCell:[self createLoadMoreCell]];
+		
         _dataSource = dataSource;
     }
     return _dataSource;
@@ -112,7 +123,27 @@
     return (UITableView *)self.view;
 }
 
+- (UITableViewCell *)createLoadMoreCell
+{
+	UITableViewCell * loadMoreCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MoreCell"];
+	[loadMoreCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+	
+	UIActivityIndicatorView * loadingActivity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	[loadingActivity setCenter:loadMoreCell.center];
+	[loadingActivity startAnimating];
+	[loadMoreCell.contentView addSubview:loadingActivity];
+	
+	return loadMoreCell;
+}
 #pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSLog(@"%d %d", indexPath.section, indexPath.row);
+//	if (indexPath.section == [self.dataSource sectionsCount]) {
+//		[self.downloadController loadMore];
+//	}
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -125,11 +156,22 @@
      */
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	NSIndexPath *indexPath =[[self.tableView indexPathsForVisibleRows] lastObject];
+	// если это ячейка loadMore
+	if (indexPath.section == [self.dataSource sectionsCount]) {
+		// запускаем догрузку
+		[self.downloadController loadMore];
+	}
+}
+
 #pragma mark - Download controller delegate
 
 - (void)controller:(RIDownloadController *)controller didFinishLoadWithResponse:(id)response
 {
     [self.refreshControl endRefreshing];
+	self.dataSource.hasMore = self.downloadController.hasMore;
 }
 
 - (void)controller:(RIDownloadController *)controller didFailLoadWithError:(NSError *)error
