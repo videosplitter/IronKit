@@ -135,15 +135,8 @@
 	
 	return loadMoreCell;
 }
-#pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSLog(@"%d %d", indexPath.section, indexPath.row);
-//	if (indexPath.section == [self.dataSource sectionsCount]) {
-//		[self.downloadController loadMore];
-//	}
-}
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

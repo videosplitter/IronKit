@@ -104,7 +104,7 @@
 				[self didFailLoadWithError:nil];
 				return;
 			}
-            NSLog(@"%@", tweetsObjects);
+
             [MagicalRecord saveInBackgroundWithBlock:^(NSManagedObjectContext *localContext) {
 				if (![tweetsObjects isKindOfClass:[NSArray class]]) {
 					return;
@@ -114,7 +114,6 @@
                 }];
                 NSArray * tweetsIds = [tweetsObjects valueForKey:@"id"];
                 
-//                [TWTweet MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"NOT tweetId IN %@", tweetsIds] inContext:localContext];
                 NSArray * tweets = [TWTweet MR_findAllSortedBy:@"tweetId" ascending:YES
                                                  withPredicate:[NSPredicate predicateWithFormat:@"tweetId IN %@", tweetsIds] inContext:localContext];
                 NSEnumerator * tweetsEnumerator = [tweets objectEnumerator];
